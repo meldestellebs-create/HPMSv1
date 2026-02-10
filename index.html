@@ -5,167 +5,167 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meldestelle Berufsbildende Schulen Stuttgart</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Modernes Icon-Set für professionellen Look -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
+
     <header class="site-header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Crect fill='%23FFED00' width='60' height='60'/%3E%3Ctext x='30' y='35' font-family='Arial' font-size='14' font-weight='bold' text-anchor='middle' fill='%231A1A1A'%3EBBS%3C/text%3E%3C/svg%3E" alt="Logo" width="60" height="60">
-                    <span class="logo-text">Meldestelle<br><strong>Berufsbildende Schulen Stuttgart</strong></span>
-                </div>
-                <nav class="main-nav">
-                    <a href="index.html" aria-current="page">Startseite</a>
-                </nav>
-            </div>
+        <div class="container header-content">
+            <a href="index.html" class="logo">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50'%3E%3Crect fill='%23FFED00' width='50' height='50'/%3E%3Ctext x='25' y='35' font-family='Arial' font-weight='bold' text-anchor='middle' fill='%231A1A1A'%3EBBS%3C/text%3E%3C/svg%3E" alt="Logo">
+                <span class="logo-text">Meldestelle der<br><strong>Berufsbildenden Schulen Stuttgart</strong></span>
+            </a>
+            <nav>
+                <a href="mailto:meldestelle-bs@stuttgart.de" class="btn" style="color:var(--text-main); font-size:0.9rem;"><i class="fas fa-envelope"></i> meldestelle-bs@stuttgart.de</a>
+            </nav>
         </div>
     </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Ihr Weg in die berufliche Zukunft</h1>
+            <p>Wir vermitteln Jugendliche und junge Erwachsene an die passenden beruflichen Schulen in Stuttgart. Starten Sie jetzt Ihre Ausbildungsvorbereitung oder Ihren Sprachkurs.</p>
+            <div class="hero-badges">
+                <span class="badge"><i class="fas fa-check"></i> Kostenfreie Vermittlung</span>
+                <span class="badge"><i class="fas fa-check"></i> Alle Schulen in Stuttgart</span>
+                <span class="badge"><i class="fas fa-check"></i> Individuelle Beratung</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Actions -->
     <main class="container">
-        <section class="intro-section">
-            <h1>Willkommen bei der Meldestelle</h1>
-            <p class="intro-text">Sie möchten eine Schule in Stuttgart besuchen? Wählen Sie den passenden Bereich:</p>
-        </section>
-
-        <section class="tile-grid">
-            <article class="tile">
-                <div class="tile-icon">🌍</div>
-                <h2>Deutsch lernen</h2>
-                <p>Für Neuzugewanderte ohne Deutschkenntnisse (VABO – Vorqualifizierungsjahr Arbeit/Beruf ohne Deutschkenntnisse)</p>
-                <a href="VABO%20Vermittlungsanfrage%20SJ%2026-27.pdf" target="_blank" class="btn btn-primary">Zur VABO-Vermittlungsanfrage</a>
+        <div class="action-grid">
+            <!-- VABO Karte -->
+            <article class="action-card">
+                <div>
+                    <span class="card-icon">🌍</span>
+                    <h2>VABO – Deutsch lernen</h2>
+                    <p><strong>Vorqualifizierungsjahr Arbeit/Beruf ohne Deutschkenntnisse.</strong><br>
+                    Für Neuzugewanderte, die intensiv Deutsch lernen möchten, um fit für den Berufseinstieg oder weiterführende Schulen zu werden.</p>
+                    <ul style="text-align:left; list-style:none; margin-bottom:1.5rem; color:#666; font-size:0.9rem;">
+                        <li><i class="fas fa-check" style="color:var(--primary)"></i> Intensiver Sprachunterricht</li>
+                        <li><i class="fas fa-check" style="color:var(--primary)"></i> Berufliche Orientierung</li>
+                    </ul>
+                </div>
+                <!-- LINK MIT URL-ENCODING (%20 für Leerzeichen) -->
+                <a href="VABO%20Vermittlungsanfrage%20SJ%2026-27.pdf" target="_blank" class="btn btn-primary">
+                    <i class="fas fa-file-pdf"></i> Vermittlungsanfrage VABO
+                </a>
             </article>
 
-            <article class="tile">
-                <div class="tile-icon">🎓</div>
-                <h2>Schulabschluss & Ausbildung</h2>
-                <p>Für Jugendliche mit und ohne Hauptschulabschluss (AVdual – Ausbildungsvorbereitung dual)</p>
-                <a href="AVdual%202026%20-%20Vermittlungsanfrage.pdf" target="_blank" class="btn btn-primary">Zur AVdual-Vermittlungsanfrage</a>
+            <!-- AVdual Karte -->
+            <article class="action-card">
+                <div>
+                    <span class="card-icon">🎓</span>
+                    <h2>AVdual – Ausbildung starten</h2>
+                    <p><strong>Ausbildungsvorbereitung dual.</strong><br>
+                    Für Jugendliche mit oder ohne Hauptschulabschluss. Verbessern Sie Ihren Abschluss und sammeln Sie praktische Erfahrung durch Betriebspraktika.</p>
+                    <ul style="text-align:left; list-style:none; margin-bottom:1.5rem; color:#666; font-size:0.9rem;">
+                        <li><i class="fas fa-check" style="color:var(--primary)"></i> Hauptschulabschluss nachholen/verbessern</li>
+                        <li><i class="fas fa-check" style="color:var(--primary)"></i> Hoher Praxisanteil im Betrieb</li>
+                    </ul>
+                </div>
+                <!-- LINK MIT URL-ENCODING (%20 für Leerzeichen) -->
+                <a href="AVdual%202026%20-%20Vermittlungsanfrage.pdf" target="_blank" class="btn btn-primary">
+                    <i class="fas fa-file-pdf"></i> Vermittlungsanfrage AVdual
+                </a>
             </article>
+        </div>
+
+        <!-- Prozess-Erklärung -->
+        <section class="process-section">
+            <h2 class="section-title">So funktioniert die Anmeldung</h2>
+            <div class="container steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>PDF herunterladen</h3>
+                    <p>Laden Sie die passende Vermittlungsanfrage (VABO oder AVdual) oben herunter.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Digital ausfüllen</h3>
+                    <p>Füllen Sie das Formular direkt am PC oder Smartphone aus und speichern Sie es.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Per E-Mail senden</h3>
+                    <p>Senden Sie das PDF + Zeugnis/Ausweis an:<br><strong>meldestelle-bs@stuttgart.de</strong></p>
+                </div>
+            </div>
         </section>
 
-        <section class="additional-resources">
-            <h2>Informationen & Downloads</h2>
+        <!-- Zusätzliche Informationen & Downloads -->
+        <section class="downloads-section">
+            <h2 style="margin-bottom:1.5rem;">Alle Dokumente & Infos</h2>
 
             <div class="tabs">
                 <button class="tab-button active" onclick="openTab(event, 'vermittlung')">Vermittlung</button>
-                <button class="tab-button" onclick="openTab(event, 'allgemein')">Allg. Infos</button>
-                <button class="tab-button" onclick="openTab(event, 'avdual')">AVdual</button>
-                <button class="tab-button" onclick="openTab(event, 'vabo')">VABO</button>
-                <button class="tab-button" onclick="openTab(event, 'ausbildung')">Ausbildung</button>
-                <button class="tab-button" onclick="openTab(event, 'traeger')">Träger, Maßnahmen & Programme</button>
+                <button class="tab-button" onclick="openTab(event, 'allgemein')">Allgemeine Infos</button>
+                <button class="tab-button" onclick="openTab(event, 'schueler')">Für Schüler*innen</button>
+                <button class="tab-button" onclick="openTab(event, 'partner')">Träger & Partner</button>
             </div>
 
+            <!-- TAB 1: Vermittlung -->
             <div id="vermittlung" class="tab-content active">
-                <div class="resource-grid">
-                    <div class="resource-card">
-                        <h3>📄 VABO-Vermittlung</h3>
-                        <ul style="list-style:none;padding:0">
-                            <li style="margin-bottom:0.5rem">
-                                <a href="VABO%20Vermittlungsanfrage%20SJ%2026-27.pdf" target="_blank" class="btn btn-link">
-                                    📥 Vermittlungsanfrage VABO
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="resource-card">
-                        <h3>📄 AVdual-Vermittlung</h3>
-                        <ul style="list-style:none;padding:0">
-                            <li style="margin-bottom:0.5rem">
-                                <a href="AVdual%202026%20-%20Vermittlungsanfrage.pdf" target="_blank" class="btn btn-link">
-                                    📥 Vermittlungsanfrage AVdual
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                <div class="download-list">
+                    <a href="VABO%20Vermittlungsanfrage%20SJ%2026-27.pdf" target="_blank" class="download-item">
+                        <i class="fas fa-file-download dl-icon"></i>
+                        <div><strong>VABO Vermittlungsanfrage</strong><br><small>Für Sprachförderung (PDF)</small></div>
+                    </a>
+                    <a href="AVdual%202026%20-%20Vermittlungsanfrage.pdf" target="_blank" class="download-item">
+                        <i class="fas fa-file-download dl-icon"></i>
+                        <div><strong>AVdual Vermittlungsanfrage</strong><br><small>Für Ausbildungsvorbereitung (PDF)</small></div>
+                    </a>
                 </div>
             </div>
 
+            <!-- TAB 2: Allgemeine Infos -->
             <div id="allgemein" class="tab-content">
-                <div class="resource-grid">
-                    <div class="resource-card">
-                        <h3>ℹ️ Bildungswege & Orientierung</h3>
-                        <ul style="list-style:none;padding:0">
-                            <li style="margin-bottom:0.5rem"><a href="https://www.farbegestaltung.de/wp-content/uploads/beruflicheschulen_2025-4.pdf" target="_blank" class="btn btn-link">📥 Berufliche Schulen in Stuttgart</a></li>
-                            <li style="margin-bottom:0.5rem"><a href="https://www.farbegestaltung.de/wp-content/uploads/Schulstart-in-Stuttgart-barrierefrei.pdf" target="_blank" class="btn btn-link">📥 Schul-Start in Stuttgart</a></li>
-                            <li style="margin-bottom:0.5rem"><a href="https://www.farbegestaltung.de/wp-content/uploads/Einjaehrige-Berufsfachschule-Angebote-Stuttgart-02_2025.pdf" target="_blank" class="btn btn-link">📥 Einjährige Berufsfachschulen - Bildungswege</a></li>
-                            <li style="margin-bottom:0.5rem"><a href="https://www.farbegestaltung.de/wp-content/uploads/Hauptschulabschluss-nachholen.pdf" target="_blank" class="btn btn-link">📥 Hauptschulabschluss nachholen</a></li>
-                            <li style="margin-bottom:0.5rem"><a href="https://bewo.kultus-bw.de/" target="_blank" class="btn btn-link">🔗 BewO - Online-Bewerbungsverfahren</a></li>
-                        </ul>
-                    </div>
-                    <div class="resource-card">
-                        <h3>📋 Meldestelle - Informationen</h3>
-                        <ul style="list-style:none;padding:0">
-                            <li style="margin-bottom:0.5rem"><a href="https://www.farbegestaltung.de/wp-content/uploads/Informationen-der-Meldestelle-der-beruflichen-Schulen-der-Stadt-Stuttgart-Stand-Maerz-2025.pdf" target="_blank" class="btn btn-link">📥 Informationen der Meldestelle</a></li>
-                            <li style="margin-bottom:0.5rem"><a href="https://www.farbegestaltung.de/wp-content/uploads/Informationssammlung-Stand-02-2025.pdf" target="_blank" class="btn btn-link">📥 Informationssammlung - Links & Kontakte</a></li>
-                            <li style="margin-bottom:0.5rem"><a href="https://www.farbegestaltung.de/wp-content/uploads/SchulPlan25_26_A4.pdf" target="_blank" class="btn btn-link">📥 Schuljahresplan</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div id="avdual" class="tab-content">
-                <div class="resource-grid">
-                    <div class="resource-card">
-                        <h3>📄 AVdual - Formulare & Informationen</h3>
-                        <ul style="list-style:none;padding:0">
-                            <li style="margin-bottom:0.5rem">
-                                <a href="AVdual%202026%20-%20Vermittlungsanfrage.pdf" target="_blank" class="btn btn-link">
-                                    📥 Vermittlungsanfrage AVdual
-                                </a>
-                            </li>
-                            <li style="margin-bottom:0.5rem"><a href="https://www.farbegestaltung.de/wp-content/uploads/Hinweisblatt-Schueler-AVdual.pdf" target="_blank" class="btn btn-link">📥 Hinweisblatt für Schüler*innen</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div id="vabo" class="tab-content">
-                <div class="resource-grid">
-                    <div class="resource-card">
-                        <h3>📄 VABO - Formulare & Informationen</h3>
-                        <ul style="list-style:none;padding:0">
-                            <li style="margin-bottom:0.5rem">
-                                <a href="VABO%20Vermittlungsanfrage%20SJ%2026-27.pdf" target="_blank" class="btn btn-link">
-                                    📥 Vermittlungsanfrage VABO
-                                </a>
-                            </li>
-                            <li style="margin-bottom:0.5rem"><a href="https://www.farbegestaltung.de/wp-content/uploads/VABO_Hinweisblatt_Maerz_2025.pdf" target="_blank" class="btn btn-link">📥 VABO Hinweisblatt</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div id="ausbildung" class="tab-content">
-                <div class="resource-grid">
-                    <div class="resource-card">
-                        <h3>🎓 Weiterbildung & Qualifizierung</h3>
-                        <ul style="list-style:none;padding:0">
-                            <li style="margin-bottom:0.5rem"><a href="https://www.farbegestaltung.de/wp-content/uploads/Vorarbeiterkurs-2025.pdf" target="_blank" class="btn btn-link">📥 Vorarbeiterkurs Maler- & Lackiererhandwerk</a></li>
-                            <li style="margin-bottom:0.5rem"><a href="https://www.farbegestaltung.de/wp-content/uploads/PLAN-A-Flyer-2025.pdf" target="_blank" class="btn btn-link">📥 PLAN A - Unterstützung bei Ausbildungssuche</a></li>
-                            <li style="margin-bottom:0.5rem"><a href="https://www.farbegestaltung.de/wp-content/uploads/Last-Minute-Connection-2025.pdf" target="_blank" class="btn btn-link">📥 Last Minute Connection</a></li>
-                        </ul>
-                    </div>
-                    <div class="resource-card">
-                        <h3>🔗 Externe Beratungsstellen</h3>
-                        <ul style="list-style:none;padding:0">
-                            <li style="margin-bottom:0.5rem"><a href="https://www.arbeitsagentur.de/bildung/ausbildung" target="_blank" class="btn btn-link">🔗 Agentur für Arbeit</a></li>
-                            <li style="margin-bottom:0.5rem"><a href="https://www.hwk-stuttgart.de/lehrstellenboerse" target="_blank" class="btn btn-link">🔗 Handwerkskammer Stuttgart</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div id="traeger" class="tab-content">
-                <div class="resource-grid">
-                    <div class="resource-card">
-                        <h3>🏢 Private Träger</h3>
-                        <ul style="list-style:none;padding:0;margin-top:1rem">
-                            <li style="margin-bottom:0.5rem"><a href="https://daa-stuttgart.de" target="_blank" class="btn btn-link">🔗 Deutsche Angestellten-Akademie (DAA)</a></li>
-                            <li style="margin-bottom:0.5rem"><a href="https://daa-berufliche-schulen.de" target="_blank" class="btn btn-link">🔗 DAA Berufliche Schulen</a></li>
-                            <li style="margin-bottom:0.5rem"><a href="https://ib-schulen.de/stuttgart-vaihingen/home" target="_blank" class="btn btn-link">🔗 Internationaler Bund (IB) Schulen</a></li>
-                        </ul>
-                        <div class="alert alert-info" style="margin-top:1.5rem">
-                            <p><strong>Hinweis:</strong> Anmeldungen bei privaten Trägern erfolgen direkt beim jeweiligen Träger.</p>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3><i class="fas fa-info-circle"></i> Orientierungshilfen</h3>
+                        <p>Welche Schule ist die richtige? Hier finden Sie Übersichten.</p>
+                        <div class="download-list" style="margin-top:1rem;">
+                            <a href="https://www.farbegestaltung.de/wp-content/uploads/beruflicheschulen_2025-4.pdf" target="_blank" class="download-item">
+                                <i class="fas fa-book"></i> Berufliche Schulen Stuttgart
+                            </a>
+                            <a href="https://www.farbegestaltung.de/wp-content/uploads/Schulstart-in-Stuttgart-barrierefrei.pdf" target="_blank" class="download-item">
+                                <i class="fas fa-wheelchair"></i> Schul-Start (barrierefrei)
+                            </a>
+                            <a href="https://bewo.kultus-bw.de/" target="_blank" class="download-item">
+                                <i class="fas fa-external-link-alt"></i> BewO Online-Bewerbung
+                            </a>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: Für Schüler -->
+            <div id="schueler" class="tab-content">
+                <div class="download-list">
+                    <a href="https://www.farbegestaltung.de/wp-content/uploads/Hinweisblatt-Schueler-AVdual.pdf" target="_blank" class="download-item">
+                        <i class="fas fa-info"></i> <strong>Hinweisblatt AVdual</strong>
+                    </a>
+                    <a href="https://www.farbegestaltung.de/wp-content/uploads/VABO_Hinweisblatt_Maerz_2025.pdf" target="_blank" class="download-item">
+                        <i class="fas fa-info"></i> <strong>Hinweisblatt VABO</strong>
+                    </a>
+                    <a href="https://www.farbegestaltung.de/wp-content/uploads/PLAN-A-Flyer-2025.pdf" target="_blank" class="download-item">
+                        <i class="fas fa-map-signs"></i> <strong>PLAN A - Ausbildungssuche</strong>
+                    </a>
+                </div>
+            </div>
+
+            <!-- TAB 4: Träger -->
+            <div id="partner" class="tab-content">
+                <div class="info-card">
+                    <h3>Private Bildungsträger</h3>
+                    <p>Ergänzend zu den städtischen Schulen bieten private Träger Maßnahmen an. <strong>Bitte melden Sie sich dort direkt an.</strong></p>
+                    <div class="download-list" style="margin-top:1rem;">
+                        <a href="https://daa-stuttgart.de" target="_blank" class="download-item"><i class="fas fa-building"></i> DAA Stuttgart</a>
+                        <a href="https://ib-schulen.de/stuttgart-vaihingen/home" target="_blank" class="download-item"><i class="fas fa-building"></i> IB Schulen</a>
                     </div>
                 </div>
             </div>
@@ -174,35 +174,39 @@
     </main>
 
     <footer class="site-footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Kontakt</h3>
-                    <p><strong>Meldestelle der berufsbildenden Schulen der Stadt Stuttgart</strong></p>
-                    <p><strong>Adresse:</strong> Leobener Str. 97, 70469 Stuttgart</p>
-                    <p><strong>Telefon:</strong> <a href="tel:071121660277">0711 / 216-60277</a></p>
-                    <p><strong>Fax:</strong> 0711 / 216-60952</p>
-                    <p><strong>E-Mail:</strong> <a href="mailto:meldestelle-bs@stuttgart.de">meldestelle-bs@stuttgart.de</a></p>
-                    <p><strong>Öffnungszeiten:</strong> Mo-Fr 08:00-12:00 Uhr</p>
-                </div>
+        <div class="container footer-grid">
+            <div class="footer-contact">
+                <span class="footer-h">Kontakt zur Meldestelle</span>
+                <p><i class="fas fa-map-marker-alt"></i> Leobener Str. 97, 70469 Stuttgart</p>
+                <p><i class="fas fa-phone"></i> 0711 / 216-60277</p>
+                <p><i class="fas fa-envelope"></i> <a href="mailto:meldestelle-bs@stuttgart.de" class="footer-link">meldestelle-bs@stuttgart.de</a></p>
             </div>
-            <p class="footer-copyright">© 2026 Landeshauptstadt Stuttgart</p>
+            <div>
+                <span class="footer-h">Öffnungszeiten</span>
+                <p>Montag - Freitag: 08:00 - 12:00 Uhr</p>
+                <p style="margin-top:1rem; font-size:0.85rem; color:#888;">Bitte beachten Sie gesonderte Öffnungszeiten in den Schulferien.</p>
+            </div>
+            <div>
+                <span class="footer-h">Rechtliches</span>
+                <p>© 2026 Landeshauptstadt Stuttgart</p>
+                <p><a href="#" class="footer-link">Impressum</a> | <a href="#" class="footer-link">Datenschutz</a></p>
+            </div>
         </div>
     </footer>
 
     <script>
-    function openTab(evt, tabName) {
-        var tabContents = document.getElementsByClassName("tab-content");
-        for (var i = 0; i < tabContents.length; i++) {
-            tabContents[i].classList.remove("active");
+        function openTab(evt, tabName) {
+            var tabContents = document.getElementsByClassName("tab-content");
+            for (var i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove("active");
+            }
+            var tabButtons = document.getElementsByClassName("tab-button");
+            for (var i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
         }
-        var tabButtons = document.getElementsByClassName("tab-button");
-        for (var i = 0; i < tabButtons.length; i++) {
-            tabButtons[i].classList.remove("active");
-        }
-        document.getElementById(tabName).classList.add("active");
-        evt.currentTarget.classList.add("active");
-    }
     </script>
 </body>
 </html>
