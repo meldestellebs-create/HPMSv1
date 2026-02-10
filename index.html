@@ -43,51 +43,146 @@
         </section>
 
         <section class="additional-resources">
-            <h2>Formulare & Informationen zum Download</h2>
-            <div class="resource-grid">
-                <div class="resource-card">
-                    <h3>📄 VABO-Formulare</h3>
-                    <ul style="list-style:none;padding:0">
-                        <li style="margin-bottom:0.5rem">
-                            <a href="https://www.farbegestaltung.de/wp-content/uploads/Anmeldung_VABO_Version_26_02_2025.pdf" target="_blank" class="btn btn-link">
-                                Vermittlungsanfrage VABO (PDF)
-                            </a>
-                        </li>
-                        <li style="margin-bottom:0.5rem">
-                            <a href="https://www.farbegestaltung.de/wp-content/uploads/VABO_Hinweisblatt_Maerz_2025.pdf" target="_blank" class="btn btn-link">
-                                VABO Hinweisblatt (PDF)
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+            <h2>Informationen & Downloads</h2>
 
-                <div class="resource-card">
-                    <h3>📄 AVdual-Formulare</h3>
-                    <ul style="list-style:none;padding:0">
-                        <li style="margin-bottom:0.5rem">
-                            <a href="https://www.farbegestaltung.de/wp-content/uploads/AVdual-Anmeldung-2-seitig-SJ-25-26.pdf" target="_blank" class="btn btn-link">
-                                Vermittlungsanfrage AVdual (PDF)
-                            </a>
-                        </li>
-                        <li style="margin-bottom:0.5rem">
-                            <a href="https://www.farbegestaltung.de/wp-content/uploads/Anmeldung-AV-dual-BEJ-VAB.pdf" target="_blank" class="btn btn-link">
-                                AVdual/BEJ/VAB Formular (PDF)
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+            <!-- Tab Navigation -->
+            <div class="tabs">
+                <button class="tab-button active" onclick="openTab(event, 'vermittlung')">Vermittlung</button>
+                <button class="tab-button" onclick="openTab(event, 'allgemein')">Allg. Infos</button>
+                <button class="tab-button" onclick="openTab(event, 'avdual')">AVdual</button>
+                <button class="tab-button" onclick="openTab(event, 'vabo')">VABO</button>
+                <button class="tab-button" onclick="openTab(event, 'ausbildung')">Ausbildung</button>
+                <button class="tab-button" onclick="openTab(event, 'traeger')">Träger, Maßnahmen & Programme</button>
+            </div>
 
-                <div class="resource-card">
-                    <h3>ℹ️ Allgemeine Informationen</h3>
-                    <ul style="list-style:none;padding:0">
-                        <li style="margin-bottom:0.5rem">
-                            <a href="https://www.farbegestaltung.de/wp-content/uploads/Informationen-der-Meldestelle-der-beruflichen-Schulen-der-Stadt-Stuttgart-Stand-Maerz-2025.pdf" target="_blank" class="btn btn-link">
-                                Informationen der Meldestelle (PDF)
-                            </a>
-                        </li>
-                    </ul>
+            <!-- Tab Content: Vermittlung -->
+            <div id="vermittlung" class="tab-content active">
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <h3>📄 VABO-Vermittlung</h3>
+                        <ul style="list-style:none;padding:0">
+                            <li style="margin-bottom:0.5rem">
+                                <a href="https://www.farbegestaltung.de/wp-content/uploads/Anmeldung_VABO_Version_26_02_2025.pdf" target="_blank" class="btn btn-link">
+                                    Vermittlungsanfrage VABO (PDF)
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3>📄 AVdual-Vermittlung</h3>
+                        <ul style="list-style:none;padding:0">
+                            <li style="margin-bottom:0.5rem">
+                                <a href="https://www.farbegestaltung.de/wp-content/uploads/AVdual-Anmeldung-2-seitig-SJ-25-26.pdf" target="_blank" class="btn btn-link">
+                                    Vermittlungsanfrage AVdual (PDF)
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
+
+            <!-- Tab Content: Allgemeine Infos -->
+            <div id="allgemein" class="tab-content">
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <h3>ℹ️ Meldestelle Informationen</h3>
+                        <ul style="list-style:none;padding:0">
+                            <li style="margin-bottom:0.5rem">
+                                <a href="https://www.farbegestaltung.de/wp-content/uploads/Informationen-der-Meldestelle-der-beruflichen-Schulen-der-Stadt-Stuttgart-Stand-Maerz-2025.pdf" target="_blank" class="btn btn-link">
+                                    Informationen der Meldestelle (PDF)
+                                </a>
+                            </li>
+                            <li style="margin-bottom:0.5rem">
+                                <a href="https://www.farbegestaltung.de/wp-content/uploads/Informationssammlung-Stand-02-2025.pdf" target="_blank" class="btn btn-link">
+                                    Informationssammlung (Stand 02/2025)
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: AVdual -->
+            <div id="avdual" class="tab-content">
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <h3>📄 AVdual-Formulare</h3>
+                        <ul style="list-style:none;padding:0">
+                            <li style="margin-bottom:0.5rem">
+                                <a href="https://www.farbegestaltung.de/wp-content/uploads/AVdual-Anmeldung-2-seitig-SJ-25-26.pdf" target="_blank" class="btn btn-link">
+                                    Vermittlungsanfrage AVdual (PDF)
+                                </a>
+                            </li>
+                            <li style="margin-bottom:0.5rem">
+                                <a href="https://www.farbegestaltung.de/wp-content/uploads/Hinweisblatt-Schueler-AVdual.pdf" target="_blank" class="btn btn-link">
+                                    Hinweisblatt AVdual (PDF)
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: VABO -->
+            <div id="vabo" class="tab-content">
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <h3>📄 VABO-Formulare</h3>
+                        <ul style="list-style:none;padding:0">
+                            <li style="margin-bottom:0.5rem">
+                                <a href="https://www.farbegestaltung.de/wp-content/uploads/Anmeldung_VABO_Version_26_02_2025.pdf" target="_blank" class="btn btn-link">
+                                    Vermittlungsanfrage VABO (PDF)
+                                </a>
+                            </li>
+                            <li style="margin-bottom:0.5rem">
+                                <a href="https://www.farbegestaltung.de/wp-content/uploads/VABO_Hinweisblatt_Maerz_2025.pdf" target="_blank" class="btn btn-link">
+                                    VABO Hinweisblatt (PDF)
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: Ausbildung -->
+            <div id="ausbildung" class="tab-content">
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <h3>🔗 Externe Links</h3>
+                        <p>Informationen zu Ausbildungsmöglichkeiten finden Sie auf den Websites der beteiligten Schulen und Beratungsstellen.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: Träger, Maßnahmen & Programme -->
+            <div id="traeger" class="tab-content">
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <h3>🏢 Private Träger</h3>
+                        <ul style="list-style:none;padding:0">
+                            <li style="margin-bottom:0.5rem">
+                                <a href="https://daa-stuttgart.de" target="_blank" class="btn btn-link">
+                                    Deutsche Angestellten Akademie (DAA)
+                                </a>
+                            </li>
+                            <li style="margin-bottom:0.5rem">
+                                <a href="https://daa-berufliche-schulen.de" target="_blank" class="btn btn-link">
+                                    DAA Berufliche Schulen
+                                </a>
+                            </li>
+                            <li style="margin-bottom:0.5rem">
+                                <a href="https://ib-schulen.de/stuttgart-vaihingen/home" target="_blank" class="btn btn-link">
+                                    IB Schulen Stuttgart
+                                </a>
+                            </li>
+                        </ul>
+                        <p style="margin-top:1rem;font-size:0.9rem;color:var(--text-light)">
+                            <strong>Hinweis:</strong> Anmeldungen bei privaten Trägern erfolgen ohne Einbeziehung der Meldestelle.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
         </section>
     </main>
 
@@ -97,11 +192,35 @@
                 <div class="footer-section">
                     <h3>Kontakt</h3>
                     <!-- HIER E-MAIL ÄNDERN -->
+                    <p><strong>Adresse:</strong> Leobener Str. 97, 70469 Stuttgart</p>
+                    <p><strong>Telefon:</strong> 0711 / 216-60277</p>
+                    <p><strong>Fax:</strong> 0711 / 216-60952</p>
                     <p><strong>E-Mail:</strong> <a href="mailto:meldestelle-bs@stuttgart.de">meldestelle-bs@stuttgart.de</a></p>
+                    <p><strong>Öffnungszeiten:</strong> Mo-Fr 08:00-12:00 Uhr</p>
                 </div>
             </div>
             <p class="footer-copyright">© 2026 Landeshauptstadt Stuttgart</p>
         </div>
     </footer>
+
+    <script>
+    function openTab(evt, tabName) {
+        // Hide all tab contents
+        var tabContents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < tabContents.length; i++) {
+            tabContents[i].classList.remove("active");
+        }
+
+        // Remove active class from all buttons
+        var tabButtons = document.getElementsByClassName("tab-button");
+        for (var i = 0; i < tabButtons.length; i++) {
+            tabButtons[i].classList.remove("active");
+        }
+
+        // Show current tab and mark button as active
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+    </script>
 </body>
 </html>
