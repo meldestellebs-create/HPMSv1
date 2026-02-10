@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VABO-Anmeldung | Meldestelle BBS Stuttgart</title>
+    <title>VABO-Vermittlungsanfrage | Meldestelle BBS Stuttgart</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <header class="site-header">
@@ -16,7 +17,6 @@
                 </div>
                 <nav class="main-nav">
                     <a href="index.html">Startseite</a>
-                    <a href="lehrkraefte.html">Für Schulen</a>
                 </nav>
             </div>
         </div>
@@ -31,18 +31,18 @@
             <button onclick="changeLanguage('romanian')">🇷🇴 Română</button>
         </div>
         <section class="intro-section">
-            <h1 data-translate="title">VABO-Anmeldung</h1>
+            <h1 data-translate="title">VABO-Vermittlungsanfrage</h1>
             <p class="intro-text" data-translate="subtitle">Vorqualifizierungsjahr Arbeit/Beruf ohne Deutschkenntnisse</p>
         </section>
         <div class="alert alert-info">
-            <p data-translate="alertInfo">Bitte füllen Sie alle Pflichtfelder aus und laden Sie die erforderlichen Dokumente hoch.</p>
+            <p data-translate="alertInfo">Bitte füllen Sie alle Pflichtfelder aus. Die benötigten Dokumente senden Sie bitte als Anhänge per E-Mail mit.</p>
         </div>
         <form id="vaboForm" data-form-type="vabo">
             <section class="form-section">
                 <h2 data-translate="personalData">Persönliche Daten</h2>
                 <div class="form-group">
                     <label for="name"><span data-translate="name">Vollständiger Name</span><span class="required">*</span></label>
-                    <input type="text" id="name" name="Vollständiger Name" required data-translate="name">
+                    <input type="text" id="name" name="Vollständiger Name" required>
                 </div>
                 <div class="form-group">
                     <label for="birthdate"><span data-translate="birthdate">Geburtsdatum</span><span class="required">*</span></label>
@@ -50,23 +50,23 @@
                 </div>
                 <div class="form-group">
                     <label for="street"><span data-translate="street">Straße und Hausnummer</span><span class="required">*</span></label>
-                    <input type="text" id="street" name="Straße" required data-translate="street">
+                    <input type="text" id="street" name="Straße" required>
                 </div>
                 <div class="form-group">
                     <label for="city"><span data-translate="city">Stadt</span><span class="required">*</span></label>
-                    <input type="text" id="city" name="Stadt" required value="Stuttgart" data-translate="city">
+                    <input type="text" id="city" name="Stadt" required value="Stuttgart">
                 </div>
                 <div class="form-group">
                     <label for="zipcode"><span data-translate="zipcode">Postleitzahl</span><span class="required">*</span></label>
-                    <input type="text" id="zipcode" name="Postleitzahl" required pattern="[0-9]{5}" data-translate="zipcode">
+                    <input type="text" id="zipcode" name="Postleitzahl" required pattern="[0-9]{5}">
                 </div>
                 <div class="form-group">
                     <label for="phone"><span data-translate="phone">Telefonnummer</span></label>
-                    <input type="tel" id="phone" name="Telefon" data-translate="phone">
+                    <input type="tel" id="phone" name="Telefon">
                 </div>
                 <div class="form-group">
                     <label for="email"><span data-translate="email">E-Mail-Adresse</span></label>
-                    <input type="email" id="email" name="E-Mail" data-translate="email">
+                    <input type="email" id="email" name="E-Mail">
                 </div>
             </section>
             <section class="form-section">
@@ -85,7 +85,7 @@
                 <h2 data-translate="education">Bisherige Schulbildung</h2>
                 <div class="form-group">
                     <label for="education"><span data-translate="education">Bisherige Schulbildung</span><span class="required">*</span></label>
-                    <textarea id="education" name="Schulbildung" required rows="4" data-translate="educationPlaceholder"></textarea>
+                    <textarea id="education" name="Schulbildung" required rows="4" placeholder="Bitte beschreiben Sie Ihre bisherige Schulbildung"></textarea>
                 </div>
             </section>
             <!-- HIER SCHULEN ÄNDERN -->
@@ -108,33 +108,24 @@
                 </div>
             </section>
             <section class="form-section">
-                <h2 data-translate="documents">Dokumente hochladen</h2>
-                <div class="form-group">
-                    <label><span data-translate="idDocument">Ausweis oder Pass</span><span class="required">*</span></label>
-                    <div class="file-upload">
-                        <input type="file" id="idFile" name="Ausweis" accept=".pdf,.jpg,.jpeg,.png" required data-display="idFileName">
-                        <label for="idFile" data-translate="choose">Datei auswählen</label>
-                        <div class="file-name" id="idFileName" data-translate="noFile">Keine Datei ausgewählt</div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label><span data-translate="residenceConfirmation">Meldebestätigung</span><span class="required">*</span></label>
-                    <div class="file-upload">
-                        <input type="file" id="residenceFile" name="Meldebestätigung" accept=".pdf,.jpg,.jpeg,.png" required data-display="residenceFileName">
-                        <label for="residenceFile" data-translate="choose">Datei auswählen</label>
-                        <div class="file-name" id="residenceFileName" data-translate="noFile">Keine Datei ausgewählt</div>
-                    </div>
+                <h2 data-translate="documents">Benötigte Dokumente</h2>
+                <div class="alert alert-warning">
+                    <p><strong>Hinweis:</strong> Bitte senden Sie folgende Dokumente als <strong>E-Mail-Anhänge</strong> mit:</p>
+                    <ul style="margin-top:0.5rem">
+                        <li data-translate="idDocument">Ausweis oder Pass</li>
+                        <li data-translate="residenceConfirmation">Meldebestätigung</li>
+                    </ul>
                 </div>
             </section>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary" data-translate="submit">Anmeldung absenden</button>
+                <button type="submit" class="btn btn-primary" data-translate="submit">Vermittlungsanfrage absenden</button>
             </div>
         </form>
     </main>
     <div id="successModal" class="modal">
         <div class="modal-content">
-            <h2>✅ Anmeldung erstellt!</h2>
-            <p>Ihre Anmeldung wurde als Datei heruntergeladen.<br><br><strong>Nächster Schritt:</strong><br>Bitte senden Sie diese Datei zusammen mit Ihren Dokumenten per E-Mail an:</p>
+            <h2>✅ Vermittlungsanfrage erstellt!</h2>
+            <p>Ihre Vermittlungsanfrage wurde als PDF heruntergeladen.<br><br><strong>Nächster Schritt:</strong><br>Bitte senden Sie diese PDF-Datei zusammen mit den erforderlichen Dokumenten (Ausweis/Pass, Meldebestätigung) per E-Mail an:</p>
             <!-- HIER E-MAIL ÄNDERN -->
             <p style="font-size:1.25rem;font-weight:bold"><a href="mailto:meldestelle-bs@stuttgart.de">meldestelle-bs@stuttgart.de</a></p>
             <button onclick="closeModal()" class="btn btn-primary">Verstanden</button>
