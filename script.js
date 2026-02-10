@@ -13,7 +13,7 @@ function switchTool(toolId) {
 }
 
 // =========================================================
-// TOOL 1: BQW-2 (Wizard Logik) - UNVERÄNDERT
+// TOOL 1: BQW-2 (Wizard Logik)
 // =========================================================
 let bqwStand = '';
 
@@ -99,10 +99,10 @@ function bqwReset() {
 }
 
 // =========================================================
-// TOOL 2: BW-Option-7 (ORIGINAL LOGIC)
+// TOOL 2: BW-Option-7 (Bildungswegetool) - EXTRACTED LOGIC
 // =========================================================
 
-// *** HIER BEGINNT DER ORIGINAL-CODE AUS DEM REPO ***
+// --- BEGINN EXTRAHIERTER CODE ---
 const paths = {
   // ============ OHNE ABSCHLUSS ============
   ohneAbschluss: {
@@ -821,123 +821,10 @@ const paths = {
       }
     ]
   }
-};
-
-// ==================== AUTOMATISCHE WEGE-ABLEITUNG UND ERGÄNZUNG ====================
-// Funktion zur Ergänzung fehlender Wege durch logische Ableitung
-function erweiterePathsMitAbleitungen() {
-  // Äquivalenz-Gruppen definieren
-  const aequivalenzGruppen = {
-    ohneAbschluss: ['ohneAbschluss'],  // Basis
-    // Weitere Gruppen werden unten manuell verarbeitet
-  };
-  
-  // VABO-spezifische Ergänzungen - VABO braucht immer +1 Jahr für Deutschförderung
-  // Fehlende Wege für VABO ergänzen, basierend auf ohneAbschluss
-  const ohneAbschlussPaths = paths.ohneAbschluss;
-  
-  // Prüfe und ergänze fehlende VABO-Wege
-  for (const ziel in ohneAbschlussPaths) {
-    if (!paths.vabo[ziel]) {
-      paths.vabo[ziel] = [];
-    }
-    
-    // Kopiere nur die wichtigsten 2-3 Wege von ohneAbschluss zu VABO
-    const relevantePaths = ohneAbschlussPaths[ziel].filter(p => p.recommended).slice(0, 2);
-    if (relevantePaths.length === 0 && ohneAbschlussPaths[ziel].length > 0) {
-      // Falls keine empfohlenen Wege, nimm die ersten 2
-      relevantePaths.push(...ohneAbschlussPaths[ziel].slice(0, 2));
-    }
-    
-    relevantePaths.forEach(originalPath => {
-      // Verbesserte Duplikatsprüfung: Prüfe auf ähnliche Steps
-      const existiert = paths.vabo[ziel].some(existingPath => {
-        // Vergleiche die zweiten Steps (nach VABO)
-        if (existingPath.steps.length < 2 || originalPath.steps.length < 2) return false;
-        const existingSecondStep = existingPath.steps[1].toLowerCase();
-        const originalSecondStep = originalPath.steps[1].toLowerCase();
-        // Prüfe ob die Steps sehr ähnlich sind
-        return existingSecondStep.includes(originalSecondStep.substring(0, 10)) || 
-               originalSecondStep.includes(existingSecondStep.substring(0, 10));
-      });
-      
-      if (!existiert) {
-        // Erstelle VABO-Version mit angepassten Steps
-        const vaboPath = {
-          title: "VABO → " + originalPath.title,
-          steps: ["VABO (Deutschförderung B1)", ...originalPath.steps.slice(1)],
-          duration: erhoeheZeit(originalPath.duration, 1),
-          note: "Nach VABO-Deutschförderung: " + originalPath.note,
-          recommended: originalPath.recommended
-        };
-        paths.vabo[ziel].push(vaboPath);
-      }
-    });
-  }
-  
-  // SBBZ-spezifische Ergänzungen
-  for (const ziel in ohneAbschlussPaths) {
-    if (!paths.sbbz[ziel]) {
-      paths.sbbz[ziel] = [];
-    }
-    
-    // Nur realistische Wege für SBBZ (nicht alle ohneAbschluss-Wege)
-    // Ziele die SBBZ erreichen kann: hauptschulabschluss, mittlereReife, berufsabschluss
-    // und mit Unterstützung auch fachhochschulreife, abitur
-    const sbbzRealistische = ['hauptschulabschluss', 'mittlereReife', 'berufsabschluss', 'fachhochschulreife'];
-    
-    if (sbbzRealistische.includes(ziel) || ziel.includes('bve') || ziel.includes('vabKF') || ziel.includes('sonderberufsschule')) {
-      const relevantePaths = ohneAbschlussPaths[ziel].filter(p => p.recommended).slice(0, 2);
-      if (relevantePaths.length === 0 && ohneAbschlussPaths[ziel].length > 0) {
-        relevantePaths.push(...ohneAbschlussPaths[ziel].slice(0, 2));
-      }
-      
-      relevantePaths.forEach(originalPath => {
-        // Verbesserte Duplikatsprüfung für SBBZ
-        const existiert = paths.sbbz[ziel].some(existingPath => {
-          // Vergleiche die zweiten Steps (nach SBBZ)
-          if (existingPath.steps.length < 2 || originalPath.steps.length < 2) return false;
-          const existingSecondStep = existingPath.steps[1].toLowerCase();
-          const originalSecondStep = originalPath.steps[1].toLowerCase();
-          // Prüfe ob die Steps sehr ähnlich sind
-          return existingSecondStep.includes(originalSecondStep.substring(0, 10)) || 
-                 originalSecondStep.includes(existingSecondStep.substring(0, 10));
-        });
-        
-        if (!existiert && paths.sbbz[ziel].length < 6) { // Maximal 6 Wege pro Ziel für SBBZ
-          const sbbzPath = {
-            title: originalPath.title + " (mit Unterstützung)",
-            steps: ["SBBZ", ...originalPath.steps.slice(1)],
-            duration: originalPath.duration,
-            note: "Mit individueller Förderung und Unterstützung: " + originalPath.note,
-            recommended: originalPath.recommended
-          };
-          paths.sbbz[ziel].push(sbbzPath);
-        }
-      });
-    }
-  }
 }
+// --- ENDE EXTRAHIERTER CODE ---
 
-// Hilfsfunktion zur Zeiterhöhung
-function erhoeheZeit(dauer, jahre) {
-  if (!dauer) return dauer;
-  const match = dauer.match(/(\d+)(-(\d+))?\s*Jahre?/);
-  if (match) {
-    const min = parseInt(match[1]) + jahre;
-    const max = match[3] ? parseInt(match[3]) + jahre : null;
-    return max ? `${min}-${max} Jahre` : `${min} Jahre`;
-  }
-  return dauer;
-}
-
-// Wege erweitern beim Laden
-erweiterePathsMitAbleitungen();
-
-
-// *** ENDE ORIGINAL-DATEN ***
-
-// Helper Functions needed for the logic above
+// Hilfsfunktion für die Zeiterhöhung (aus Original-Repo)
 function erhoeheZeit(dauer, jahre) {
     if (!dauer) return dauer;
     const match = dauer.match(/(\d+)(-(\d+))?\s*Jahre?/);
@@ -949,41 +836,34 @@ function erhoeheZeit(dauer, jahre) {
     return dauer;
 }
 
-// Run the expansion logic immediately
-if (typeof erweiterePathsMitAbleitungen === 'function') {
-    erweiterePathsMitAbleitungen();
-} else {
-    // If the function was not in the extracted block, define it here:
-    function erweiterePathsMitAbleitungen() {
-        const ohneAbschlussPaths = paths.ohneAbschluss;
-        // VABO Logic
-        if (!paths.vabo) paths.vabo = {};
-        for (const ziel in ohneAbschlussPaths) {
+// Ableitungs-Logik falls nicht im Extrakt enthalten
+function erweiterePathsMitAbleitungen() {
+    // Prüfen, ob VABO-Pfade abgeleitet werden müssen
+    if (!paths.vabo || Object.keys(paths.vabo).length === 0) {
+        paths.vabo = {};
+        const ohneAbschluss = paths.ohneAbschluss;
+        for (const ziel in ohneAbschluss) {
             if (!paths.vabo[ziel]) paths.vabo[ziel] = [];
-            const relevante = ohneAbschlussPaths[ziel].filter(p => p.recommended).slice(0, 2);
-            if (relevante.length === 0) relevante.push(...ohneAbschlussPaths[ziel].slice(0, 2));
+            // Wir nehmen die ersten 2 Wege von "ohneAbschluss" und fügen VABO davor
+            const basePaths = ohneAbschluss[ziel].slice(0, 2);
 
-            relevante.forEach(op => {
+            basePaths.forEach(op => {
                 paths.vabo[ziel].push({
                     title: "VABO → " + op.title,
-                    steps: ["VABO (Deutsch)", ...op.steps.slice(1)],
+                    steps: ["VABO (Deutsch)", ...op.steps.slice(1)], // Schritt "Ohne Abschluss" ersetzen
                     duration: erhoeheZeit(op.duration, 1),
-                    note: "Nach VABO: " + op.note,
+                    note: "Nach erfolgreicher Deutschförderung im VABO: " + op.note,
                     recommended: op.recommended
                 });
             });
         }
-        // SBBZ Logic (Simplified for brevity as it was complex in doc)
-        if (!paths.sbbz) paths.sbbz = {};
-        // Add basic SBBZ paths if missing
     }
-    erweiterePathsMitAbleitungen();
 }
+// Einmalig ausführen
+try { erweiterePathsMitAbleitungen(); } catch(e) { console.log("Fehler bei Ableitungen", e); }
 
-// ==========================================
-// INTERFACE LOGIC FOR TOOL 2
-// ==========================================
 
+// INTERFACE LOGIC
 function bw7UpdateTargets() {
     const start = document.getElementById('bw7-start').value;
     const zielSelect = document.getElementById('bw7-ziel');
@@ -995,10 +875,10 @@ function bw7UpdateTargets() {
 
     if (!start || !paths[start]) return;
 
-    // Get available targets from the paths object
+    // Get available targets
     const targets = Object.keys(paths[start]);
 
-    // Map internal keys to readable labels (Standardized labels)
+    // Labels mapping
     const labels = {
         'hauptschulabschluss': 'Hauptschulabschluss',
         'mittlereReife': 'Mittlere Reife',
@@ -1029,27 +909,34 @@ function bw7ShowPath() {
 
     if (!start || !ziel || !paths[start] || !paths[start][ziel]) return;
 
-    const possiblePaths = paths[start][ziel];
+    const possiblePaths = paths[start][ziel]; // THIS IS THE ARRAY OF 6 PATHS
 
-    let html = `<div class="results-header">✨ ${possiblePaths.length} Wege gefunden</div><div class="results-list">`;
+    // Build HTML for ALL paths found
+    let html = `<div class="results-header" style="text-align:center; margin-bottom:20px;"><h3>✨ ${possiblePaths.length} Wege gefunden</h3></div><div class="results-list">`;
 
     possiblePaths.forEach((path, idx) => {
         // Build steps HTML
         let stepsHtml = '';
-        path.steps.forEach((step, sIdx) => {
-            stepsHtml += `<span class="step">${step}</span>`;
-            if(sIdx < path.steps.length - 1) stepsHtml += `<span class="arrow">→</span>`;
-        });
+        if(path.steps) {
+            path.steps.forEach((step, sIdx) => {
+                stepsHtml += `<span class="step" style="display:inline-block; padding:5px 10px; background:rgba(102,126,234,0.1); border-radius:8px; margin:2px;">${step}</span>`;
+                if(sIdx < path.steps.length - 1) stepsHtml += `<span class="arrow" style="margin:0 5px;">→</span>`;
+            });
+        }
 
         html += `
-            <div class="path-card animate-in" style="animation-delay: ${idx * 0.1}s">
-                <div class="path-card-header">
-                    <div class="path-number-badge">${idx + 1}</div>
-                    <div class="path-title">${path.title}</div>
-                    ${path.duration ? `<div class="duration-badge">⏱️ ${path.duration}</div>` : ''}
+            <div class="path-card animate-in" style="animation-delay: ${idx * 0.1}s; margin-bottom: 20px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: rgba(255,255,255,0.02);">
+                <div class="path-card-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div class="path-number-badge" style="background:#667eea; width:24px; height:24px; border-radius:50%; display:flex; justify-content:center; align-items:center; font-weight:bold;">${idx + 1}</div>
+                        <div class="path-title" style="font-weight:bold; font-size:1.1rem;">${path.title}</div>
+                    </div>
+                    ${path.duration ? `<div class="duration-badge" style="background:#ffd93d; color:#000; padding:2px 8px; border-radius:12px; font-size:0.8rem; font-weight:bold;">⏱️ ${path.duration}</div>` : ''}
                 </div>
-                <div class="path-steps">${stepsHtml}</div>
-                ${path.note ? `<div class="path-note"><strong>ℹ️ Hinweis:</strong> ${path.note}</div>` : ''}
+
+                <div class="path-steps" style="margin:15px 0;">${stepsHtml}</div>
+
+                ${path.note ? `<div class="path-note" style="background:rgba(255,217,61,0.1); padding:10px; border-radius:8px; border-left:3px solid #ffd93d; font-size:0.9rem;"><strong>ℹ️ Hinweis:</strong> ${path.note}</div>` : ''}
             </div>
         `;
     });
