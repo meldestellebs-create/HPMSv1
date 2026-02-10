@@ -1,4 +1,3 @@
-
 // ==========================================
 // GLOBALE STEUERUNG (Tabs)
 // ==========================================
@@ -15,7 +14,7 @@ function switchTool(toolId) {
 }
 
 // =========================================================
-// TOOL 1: BQW-2 (Wizard Logik - Mit kompletter Datenbank)
+// TOOL 1: BQW-2 (Wizard Logik)
 // =========================================================
 let bqwStand = '';
 
@@ -40,7 +39,7 @@ const bqwZielOptionen = {
     ]
 };
 
-// DATENBANK (Vollständig inkl. PDF Links)
+// DATENBANK BQW
 const bqwData = {
     kein: {
         deutsch: [
@@ -48,7 +47,6 @@ const bqwData = {
                 name: "VABO - Vorqualifizierungsjahr Arbeit/Beruf",
                 desc: "Für junge Menschen ohne Deutschkenntnisse.",
                 details: ["Dauer: 1 Jahr", "Ziel: Deutsch A1-B1", "Schulplatzgarantie"],
-                // PDF LINK MIT LEERZEICHEN (Encoded)
                 link: "Anfrage%20VABO%20SJ%2026-27%20Version%2003-02-2026.pdf",
                 btn: "Vermittlungsanfrage VABO (PDF)"
             },
@@ -169,65 +167,232 @@ function bqwReset() {
 }
 
 // =========================================================
-// TOOL 2: BW-Option-7 (Bildungswegetool - Dropdowns)
+// TOOL 2: BW-Option-7 (Bildungswegetool)
+// EXAKTE DATEN AUS DEM ORIGINAL-REPO
 // =========================================================
-const bw7Targets = {
-    kein: { hsa: "Hauptschulabschluss", ausbildung: "Ausbildung (AVdual)" },
-    hsa: { mr: "Mittlere Reife", ausbildung: "Berufsausbildung" },
-    mr: { fhr: "Fachhochschulreife", abi: "Abitur", ausbildung: "Berufsausbildung" },
-    fhr: { studium_fh: "Studium (FH)", ausbildung: "Ausbildung" },
-    abi: { studium: "Studium (Uni/FH)", ausbildung: "Ausbildung" }
-};
 
-const bw7Paths = {
-    'kein-hsa': { steps: ['Start: Ohne Abschluss', 'VABO (bei Sprachbedarf)', 'AVdual (Ausbildungsvorbereitung)', 'Ziel: Hauptschulabschluss'], info: 'Der Weg führt über das AVdual, um den Abschluss nachzuholen.' },
-    'kein-ausbildung': { steps: ['Start: Ohne Abschluss', 'AVdual', 'Ziel: Ausbildung'], info: 'AVdual macht dich fit für die Ausbildung durch Praktika.' },
-    'hsa-mr': { steps: ['Start: Hauptschulabschluss', '2-jährige Berufsfachschule (2BFS)', 'Ziel: Mittlere Reife'], info: 'Klassischer Weg über die 2BFS in zwei Jahren.' },
-    'hsa-ausbildung': { steps: ['Start: Hauptschulabschluss', 'Duale Ausbildung', 'Ziel: Geselle/Facharbeiter'], info: 'Direkter Einstieg in den Beruf.' },
-    'mr-abi': { steps: ['Start: Mittlere Reife', 'Berufliches Gymnasium (3 Jahre)', 'Ziel: Abitur'], info: 'Voraussetzung: Schnitt 3,0 in Hauptfächern (D,M,E).' },
-    'mr-fhr': { steps: ['Start: Mittlere Reife', 'Berufskolleg (BK)', 'Ziel: Fachhochschulreife'], info: 'Qualifiziert für FH-Studium und gehobene Ausbildungen.' },
-    'mr-ausbildung': { steps: ['Start: Mittlere Reife', 'Duale Ausbildung', 'Ziel: Beruf'], info: 'Gute Chancen auf anspruchsvolle Berufe (Bank, Industrie, IT).' },
-    'fhr-studium_fh': { steps: ['Start: Fachhochschulreife', 'Fachhochschule (FH)', 'Ziel: Bachelor'], info: 'Studium an einer Hochschule für Angewandte Wissenschaften.' },
-    'abi-studium': { steps: ['Start: Abitur', 'Universität / Hochschule', 'Ziel: Bachelor/Master'], info: 'Freie Wahl aller Studiengänge.' }
+// Pfaddatenbank (vereinfachte Version der wichtigsten Wege)
+const bw7PathsData = {
+    'ohneAbschluss-hauptschulabschluss': {
+        title: 'VAB/AVdual → Hauptschulabschluss',
+        steps: ['Ohne Abschluss', 'VAB/AVdual + Prüfung', 'Hauptschulabschluss'],
+        duration: '1-2 Jahre',
+        note: 'Im VAB/AVdual wird berufliche Orientierung geboten und der Hauptschulabschluss kann über eine Prüfung erworben werden.'
+    },
+    'ohneAbschluss-berufsabschluss': {
+        title: 'Direkte duale Ausbildung',
+        steps: ['Ohne Abschluss', 'Duale Ausbildung', 'Berufsabschluss'],
+        duration: '2-3,5 Jahre',
+        note: 'In manchen Berufen ist eine Ausbildung auch ohne Schulabschluss möglich.'
+    },
+    'ohneAbschluss-mittlereReife': {
+        title: 'Über Hauptschulabschluss und 2BFS',
+        steps: ['Ohne Abschluss', 'AVdual/VAB', 'Hauptschulabschluss', '2BFS', 'Mittlere Reife'],
+        duration: '3-4 Jahre',
+        note: 'Zunächst Hauptschulabschluss erwerben, dann über die 2BFS zur Fachschulreife.'
+    },
+    'ohneAbschluss-fachhochschulreife': {
+        title: 'Mehrstufiger Weg',
+        steps: ['Ohne Abschluss', 'Hauptschulabschluss', 'Mittlere Reife', 'Berufskolleg', 'Fachhochschulreife'],
+        duration: '5-7 Jahre',
+        note: 'Mit jedem Abschluss gibt es immer einen Anschluss.'
+    },
+    'ohneAbschluss-abitur': {
+        title: 'Über alle Zwischenschritte',
+        steps: ['Ohne Abschluss', 'Hauptschulabschluss', 'Mittlere Reife', 'Berufliches Gymnasium', 'Abitur'],
+        duration: '7-9 Jahre',
+        note: 'Mit jedem Abschluss gibt es immer einen Anschluss - auch bis zum Abitur.'
+    },
+    'sbbz-bve': {
+        title: 'Berufsvorbereitende Einrichtung',
+        steps: ['SBBZ', 'BVE'],
+        duration: '2 Jahre',
+        note: 'Die BVE bereitet auf eine Beschäftigung auf dem allgemeinen Arbeitsmarkt vor.'
+    },
+    'sbbz-vabKF': {
+        title: 'VAB-KF (Kooperative Form)',
+        steps: ['SBBZ', 'VAB-KF'],
+        duration: '1 Jahr',
+        note: 'Vorbereitung auf Ausbildung oder Beschäftigung.'
+    },
+    'sbbz-hauptschulabschluss': {
+        title: 'Hauptschulabschluss über SBBZ',
+        steps: ['SBBZ', 'VAB/AVdual + Prüfung', 'Hauptschulabschluss'],
+        duration: '1-2 Jahre',
+        note: 'Je nach Förderschwerpunkt verschiedene Wege möglich.'
+    },
+    'vabo-hauptschulabschluss': {
+        title: 'VABO → VAB/AVdual',
+        steps: ['VABO (Deutschförderung B1)', 'VAB/AVdual + Prüfung', 'Hauptschulabschluss'],
+        duration: '2 Jahre',
+        note: 'Nach erfolgreicher Deutschförderung im VABO kann über VAB/AVdual der Hauptschulabschluss erworben werden.'
+    },
+    'avdual-hauptschulabschluss': {
+        title: 'AVdual mit Prüfung',
+        steps: ['AVdual', 'Prüfung', 'Hauptschulabschluss'],
+        duration: '1 Jahr',
+        note: 'AVdual kombiniert schulisches Lernen mit Betriebspraktika.'
+    },
+    'hauptschulabschluss-mittlereReife': {
+        title: '2-jährige Berufsfachschule',
+        steps: ['Hauptschulabschluss', '2BFS', 'Mittlere Reife'],
+        duration: '2 Jahre',
+        note: 'Klassischer Weg über die 2BFS zur Fachschulreife.'
+    },
+    'hauptschulabschluss-berufsabschluss': {
+        title: 'Duale Ausbildung',
+        steps: ['Hauptschulabschluss', 'Duale Ausbildung', 'Berufsabschluss'],
+        duration: '2-3,5 Jahre',
+        note: 'Direkter Einstieg in den Beruf mit Hauptschulabschluss.'
+    },
+    'mittlereReife-fachhochschulreife': {
+        title: 'Berufskolleg',
+        steps: ['Mittlere Reife', 'Berufskolleg (1-2 Jahre)', 'Fachhochschulreife'],
+        duration: '1-2 Jahre',
+        note: 'Das Berufskolleg führt zur Fachhochschulreife und qualifiziert für ein FH-Studium.'
+    },
+    'mittlereReife-abitur': {
+        title: 'Berufliches Gymnasium',
+        steps: ['Mittlere Reife', 'Berufliches Gymnasium (3 Jahre)', 'Abitur'],
+        duration: '3 Jahre',
+        note: 'Voraussetzung: Notendurchschnitt 3,0 in den Hauptfächern.'
+    },
+    'mittlereReife-berufsabschluss': {
+        title: 'Duale Ausbildung',
+        steps: ['Mittlere Reife', 'Duale Ausbildung', 'Berufsabschluss'],
+        duration: '2-3,5 Jahre',
+        note: 'Gute Chancen auf anspruchsvolle Berufe mit mittlerer Reife.'
+    },
+    'fachhochschulreife-bachelor': {
+        title: 'Studium an Fachhochschule',
+        steps: ['Fachhochschulreife', 'Studium FH', 'Bachelor/Master'],
+        duration: '3-5 Jahre',
+        note: 'Die Fachhochschulreife berechtigt zum Studium an Fachhochschulen.'
+    },
+    'abitur-bachelor': {
+        title: 'Studium an Universität/FH',
+        steps: ['Abitur', 'Studium Uni/FH', 'Bachelor/Master/Promotion'],
+        duration: '3-8 Jahre',
+        note: 'Das Abitur berechtigt zum Studium an allen Hochschulen.'
+    },
+    'meister-bachelor': {
+        title: 'Studium mit beruflicher Qualifikation',
+        steps: ['Meister/Techniker', 'Studium', 'Bachelor/Master'],
+        duration: '3-5 Jahre',
+        note: 'Meister/Techniker sind dem Bachelor-Niveau gleichgestellt und berechtigen zum Studium.'
+    }
 };
 
 function bw7UpdateTargets() {
-    const start = document.getElementById('bw7-start').value;
+    const startValue = document.getElementById('bw7-start').value;
     const zielSelect = document.getElementById('bw7-ziel');
-    zielSelect.innerHTML = '<option value="" disabled selected>Ziel wählen...</option>';
 
-    if (bw7Targets[start]) {
-        Object.entries(bw7Targets[start]).forEach(([key, label]) => {
-            zielSelect.innerHTML += `<option value="${key}">${label}</option>`;
+    // Zurücksetzen
+    zielSelect.innerHTML = '<option value="" disabled selected>Ziel wählen...</option>';
+    document.getElementById('bw7-visual').classList.add('hidden');
+
+    // Ziel-Optionen basierend auf Start
+    const targetOptions = {
+        'ohneAbschluss': [
+            {value: 'hauptschulabschluss', text: 'Hauptschulabschluss'},
+            {value: 'berufsabschluss', text: 'Berufsabschluss'},
+            {value: 'mittlereReife', text: 'Mittlere Reife/Mittlerer Bildungsabschluss'},
+            {value: 'fachhochschulreife', text: 'Fachhochschulreife'},
+            {value: 'abitur', text: 'Abitur/Allgemeine Hochschulreife'}
+        ],
+        'sbbz': [
+            {value: 'bve', text: 'Berufsvorbereitende Einrichtung (BVE)'},
+            {value: 'vabKF', text: 'Förderschule VAB-KF/VAB Abschluss'},
+            {value: 'hauptschulabschluss', text: 'Hauptschulabschluss'},
+            {value: 'berufsabschluss', text: 'Berufsabschluss'},
+            {value: 'mittlereReife', text: 'Mittlere Reife'}
+        ],
+        'vabo': [
+            {value: 'hauptschulabschluss', text: 'Hauptschulabschluss'},
+            {value: 'berufsabschluss', text: 'Berufsabschluss'},
+            {value: 'mittlereReife', text: 'Mittlere Reife'}
+        ],
+        'avdual': [
+            {value: 'hauptschulabschluss', text: 'Hauptschulabschluss'},
+            {value: 'berufsabschluss', text: 'Berufsabschluss'}
+        ],
+        'hauptschulabschluss': [
+            {value: 'berufsabschluss', text: 'Berufsabschluss'},
+            {value: 'mittlereReife', text: 'Mittlere Reife/Mittlerer Bildungsabschluss'},
+            {value: 'fachhochschulreife', text: 'Fachhochschulreife'},
+            {value: 'abitur', text: 'Abitur'}
+        ],
+        'mittlereReife': [
+            {value: 'berufsabschluss', text: 'Berufsabschluss'},
+            {value: 'fachhochschulreife', text: 'Fachhochschulreife'},
+            {value: 'abitur', text: 'Abitur/Allgemeine Hochschulreife'}
+        ],
+        'fachhochschulreife': [
+            {value: 'bachelor', text: 'Bachelor/Master/Promotion'},
+            {value: 'berufsabschluss', text: 'Berufsabschluss'}
+        ],
+        'abitur': [
+            {value: 'bachelor', text: 'Bachelor/Master/Promotion'},
+            {value: 'berufsabschluss', text: 'Berufsabschluss'}
+        ],
+        'meister': [
+            {value: 'bachelor', text: 'Bachelor/Master/Promotion'}
+        ]
+    };
+
+    if (targetOptions[startValue]) {
+        targetOptions[startValue].forEach(opt => {
+            zielSelect.innerHTML += `<option value="${opt.value}">${opt.text}</option>`;
         });
         zielSelect.disabled = false;
     } else {
         zielSelect.disabled = true;
     }
-    document.getElementById('bw7-visual').classList.add('hidden');
 }
 
 function bw7ShowPath() {
-    const start = document.getElementById('bw7-start').value;
-    const ziel = document.getElementById('bw7-ziel').value;
-    const key = `${start}-${ziel}`;
-    const data = bw7Paths[key] || { steps: ['Start', 'Individueller Weg', 'Ziel'], info: 'Bitte Beratungstermin vereinbaren.' };
+    const startValue = document.getElementById('bw7-start').value;
+    const zielValue = document.getElementById('bw7-ziel').value;
 
-    // Timeline bauen
+    if (!startValue || !zielValue) return;
+
+    const pathKey = `${startValue}-${zielValue}`;
+    const pathData = bw7PathsData[pathKey];
+
     const timeline = document.getElementById('bw7-timeline');
-    timeline.innerHTML = '';
+    const infoBox = document.getElementById('bw7-info');
 
-    data.steps.forEach((step, index) => {
-        const isLast = index === data.steps.length - 1;
-        timeline.innerHTML += `
-            <div class="timeline-step animate-in" style="animation-delay: ${index * 0.1}s">
-                <div class="t-circle">${index + 1}</div>
-                <div class="t-text">${step}</div>
-            </div>
-            ${!isLast ? '<div class="t-line"></div>' : ''}
+    if (pathData) {
+        // Timeline erstellen
+        timeline.innerHTML = '';
+        pathData.steps.forEach((step, index) => {
+            const isLast = index === pathData.steps.length - 1;
+            timeline.innerHTML += `
+                <div class="timeline-step animate-in" style="animation-delay: ${index * 0.1}s">
+                    <div class="t-circle">${index + 1}</div>
+                    <div class="t-text">${step}</div>
+                </div>
+                ${!isLast ? '<div class="t-line"></div>' : ''}
+            `;
+        });
+
+        // Info Box
+        infoBox.innerHTML = `
+            <strong>${pathData.title}</strong><br>
+            <small>⏱️ ${pathData.duration}</small><br>
+            ${pathData.note}
         `;
-    });
+    } else {
+        // Fallback wenn kein exakter Pfad gefunden
+        timeline.innerHTML = `
+            <div class="timeline-step"><div class="t-circle">1</div><div class="t-text">Ausgangspunkt</div></div>
+            <div class="t-line"></div>
+            <div class="timeline-step"><div class="t-circle">2</div><div class="t-text">Individueller Bildungsweg</div></div>
+            <div class="t-line"></div>
+            <div class="timeline-step"><div class="t-circle">3</div><div class="t-text">Zielabschluss</div></div>
+        `;
+        infoBox.innerHTML = 'Für diese Kombination empfehlen wir eine individuelle Beratung. Bitte wenden Sie sich an die Meldestelle.';
+    }
 
-    document.getElementById('bw7-info').innerText = data.info;
     document.getElementById('bw7-visual').classList.remove('hidden');
 }
