@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -10,14 +9,21 @@
 </head>
 <body>
 
+    <!-- Background Animation (wie im BQW-2 Repo) -->
+    <div class="bg-animation">
+        <div class="gradient-blob blob-1"></div>
+        <div class="gradient-blob blob-2"></div>
+        <div class="gradient-blob blob-3"></div>
+    </div>
+
     <!-- Header -->
-    <header class="header">
+    <header class="header glass-card">
         <div class="container nav-flex">
             <a href="index.html" class="logo">
-                <i class="fas fa-school" style="color:var(--primary); font-size:1.5rem;"></i>
+                <div class="logo-icon">BBS</div>
                 <span>Meldestelle Stuttgart</span>
             </a>
-            <a href="mailto:meldestelle-bs@stuttgart.de" class="btn btn-outline">
+            <a href="mailto:meldestelle-bs@stuttgart.de" class="btn btn-sm btn-glass">
                 <i class="fas fa-envelope"></i> Kontakt
             </a>
         </div>
@@ -26,110 +32,146 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <h1>Dein Weg in die Zukunft</h1>
-            <p>Wir helfen dir, die passende berufliche Schule in Stuttgart zu finden. <br>Nutze unseren Wegweiser oder lade direkt die Formulare herunter.</p>
-            <div class="hero-buttons">
-                <button onclick="scrollToElement('wizard')" class="btn btn-primary">
+            <span class="hero-badge animate-in">Offizielles Portal</span>
+            <h1 class="hero-title animate-in delay-1">
+                Bildungswege in<br>
+                <span class="text-gradient">Stuttgart</span>
+            </h1>
+
+            <!-- Neuer Text (Anforderung 1) -->
+            <p class="hero-subtitle animate-in delay-2">
+                Wir sind zuständig für Jugendliche mit Wohnort Stuttgart ab 15 Jahren bis Volljährigkeit. 
+                Wir nehmen Vermittlungsanfragen für die beiden Schularten <strong>VABO</strong> und <strong>AVdual</strong> entgegen. 
+                Im VABO lernt man Deutsch und im AVdual macht oder verbessert man seinen Hauptschulabschluss.
+            </p>
+
+            <!-- Buttons -->
+            <div class="hero-actions animate-in delay-3">
+                <button onclick="scrollToElement('wizard')" class="btn btn-primary btn-glow">
                     <i class="fas fa-compass"></i> Zum Schul-Wegweiser
                 </button>
-                <button onclick="scrollToElement('downloads')" class="btn btn-outline">
-                    <i class="fas fa-file-download"></i> Direkt zu den Formularen
+                <button onclick="scrollToElement('downloads')" class="btn btn-glass">
+                    <i class="fas fa-download"></i> Direkt zu den Formularen
                 </button>
             </div>
+
+            <!-- "Kostenfreie Vermittlung..." wurde entfernt (Anforderung 2) -->
         </div>
     </section>
 
-    <!-- Wizard Section (Interaktiver Teil) -->
-    <section id="wizard" class="container mb-4">
-        <div class="section-title">Schul-Wegweiser</div>
+    <!-- Wizard Section (Wegweiser) -->
+    <section id="wizard" class="container section-spacing">
+        <div class="glass-card wizard-container animate-in">
+            <div class="section-header text-center">
+                <span class="section-tag">Orientierung</span>
+                <h2>Der Schul-Wegweiser</h2>
+                <p>Finde in zwei Schritten das passende Angebot.</p>
+            </div>
 
-        <!-- Step 1: Bildungsstand -->
-        <div id="step1">
-            <p class="text-center mb-4"><strong>Schritt 1/2:</strong> Welchen Schulabschluss hast du aktuell?</p>
-            <div class="grid-cols">
-                <div class="option-card" onclick="selectBildungsstand('kein')">
-                    <span class="card-icon">🚀</span>
-                    <h3>Kein Abschluss / Neu hier</h3>
-                    <p>Ich habe noch keinen deutschen Schulabschluss oder lerne gerade Deutsch.</p>
-                </div>
-                <div class="option-card" onclick="selectBildungsstand('hauptschul')">
-                    <span class="card-icon">📝</span>
-                    <h3>Hauptschulabschluss</h3>
-                    <p>Ich habe den Hauptschulabschluss erfolgreich bestanden.</p>
-                </div>
-                <div class="option-card" onclick="selectBildungsstand('mittlerer')">
-                    <span class="card-icon">🎓</span>
-                    <h3>Mittlere Reife</h3>
-                    <p>Ich habe die Realschule oder Werkrealschule abgeschlossen.</p>
+            <!-- Step 1 -->
+            <div id="step1">
+                <div class="grid-cols-3">
+                    <div class="option-card" onclick="selectBildungsstand('kein')">
+                        <div class="card-icon-wrapper">🚀</div>
+                        <h3>Kein Abschluss / Neu hier</h3>
+                        <p>Ich habe noch keinen Abschluss oder lerne Deutsch.</p>
+                    </div>
+                    <div class="option-card" onclick="selectBildungsstand('hauptschul')">
+                        <div class="card-icon-wrapper">📝</div>
+                        <h3>Hauptschulabschluss</h3>
+                        <p>Ich habe den Hauptschulabschluss bestanden.</p>
+                    </div>
+                    <div class="option-card" onclick="selectBildungsstand('mittlerer')">
+                        <div class="card-icon-wrapper">🎓</div>
+                        <h3>Mittlere Reife</h3>
+                        <p>Ich habe die Realschule abgeschlossen.</p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Step 2: Ziel (Dynamisch) -->
-        <div id="step2" class="hidden">
-            <button onclick="stepBack()" class="btn btn-outline mb-4"><i class="fas fa-arrow-left"></i> Zurück</button>
-            <p class="text-center mb-4"><strong>Schritt 2/2:</strong> Was ist dein nächstes Ziel?</p>
-            <div id="zielOptionsGrid" class="grid-cols">
-                <!-- Javascript füllt das hier -->
-            </div>
-        </div>
-
-        <!-- Results (Dynamisch) -->
-        <div id="results" class="hidden">
-            <div class="text-center mb-4">
-                <button onclick="resetWizard()" class="btn btn-primary"><i class="fas fa-redo"></i> Neu starten</button>
-            </div>
-            <h2 class="text-center mb-4">Das passt zu dir:</h2>
-            <div id="resultsGrid" class="grid-cols">
-                <!-- Javascript füllt das hier -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Downloads Section (Statisch) -->
-    <section id="downloads" class="download-section">
-        <div class="container">
-            <div class="section-title">Direkt-Downloads</div>
-            <p class="text-center mb-4 text-light">Die wichtigsten Formulare für die Anmeldung.</p>
-
-            <div class="download-grid">
-                <!-- VABO Card -->
-                <div class="dl-card">
-                    <h3><i class="fas fa-globe" style="color:var(--primary)"></i> VABO</h3>
-                    <p class="mb-4">Für Jugendliche ohne Deutschkenntnisse (Sprachförderung).</p>
-                    <a href="VABO%20Vermittlungsanfrage%20SJ%2026-27.pdf" target="_blank" class="btn btn-outline btn-full">
-                        <i class="fas fa-download"></i> PDF herunterladen
-                    </a>
+            <!-- Step 2 -->
+            <div id="step2" class="hidden">
+                <button onclick="stepBack()" class="btn-text mb-4"><i class="fas fa-arrow-left"></i> Zurück</button>
+                <div id="zielOptionsGrid" class="grid-cols-3">
+                    <!-- JS füllt das -->
                 </div>
+            </div>
 
-                <!-- AVdual Card -->
-                <div class="dl-card">
-                    <h3><i class="fas fa-tools" style="color:var(--primary)"></i> AVdual</h3>
-                    <p class="mb-4">Für Jugendliche, die eine Ausbildung vorbereiten wollen.</p>
-                    <a href="AVdual%202026%20-%20Vermittlungsanfrage.pdf" target="_blank" class="btn btn-outline btn-full">
-                        <i class="fas fa-download"></i> PDF herunterladen
-                    </a>
+            <!-- Results -->
+            <div id="results" class="hidden">
+                <div class="results-top-bar">
+                    <button onclick="resetWizard()" class="btn-text"><i class="fas fa-redo"></i> Neu starten</button>
                 </div>
-
-                <!-- Info Card -->
-                <div class="dl-card">
-                    <h3><i class="fas fa-info-circle" style="color:var(--primary)"></i> Infos & Kontakte</h3>
-                    <p class="mb-4">Wichtige Adressen und Schulübersichten.</p>
-                    <a href="https://www.farbegestaltung.de/wp-content/uploads/Informationssammlung-Stand-02-2025.pdf" target="_blank" class="btn btn-outline btn-full">
-                        <i class="fas fa-external-link-alt"></i> Zur Übersicht
-                    </a>
+                <div id="resultsGrid" class="results-list">
+                    <!-- JS füllt das -->
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Downloads Section (Ordnung geschaffen!) -->
+    <section id="downloads" class="container section-spacing">
+        <div class="glass-card p-5">
+            <div class="section-header text-center mb-5">
+                <span class="section-tag">Downloads</span>
+                <h2>Formulare & Infos</h2>
+            </div>
+
+            <div class="grid-cols-2">
+                <!-- VABO Box -->
+                <div class="download-box">
+                    <div class="box-icon vabo-icon"><i class="fas fa-globe"></i></div>
+                    <div class="box-content">
+                        <h3>VABO</h3>
+                        <p>Für Jugendliche ohne Deutschkenntnisse.</p>
+                        <div class="btn-group">
+                            <a href="VABO%20Vermittlungsanfrage%20SJ%2026-27.pdf" target="_blank" class="btn btn-sm btn-primary">
+                                <i class="fas fa-download"></i> Vermittlungsanfrage
+                            </a>
+                            <a href="https://www.farbegestaltung.de/wp-content/uploads/VABO_Hinweisblatt_Maerz_2025.pdf" target="_blank" class="btn btn-sm btn-glass">
+                                <i class="fas fa-info"></i> Merkblatt
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AVdual Box -->
+                <div class="download-box">
+                    <div class="box-icon avdual-icon"><i class="fas fa-tools"></i></div>
+                    <div class="box-content">
+                        <h3>AVdual</h3>
+                        <p>Ausbildungsvorbereitung & Hauptschulabschluss.</p>
+                        <div class="btn-group">
+                            <a href="AVdual%202026%20-%20Vermittlungsanfrage.pdf" target="_blank" class="btn btn-sm btn-primary">
+                                <i class="fas fa-download"></i> Vermittlungsanfrage
+                            </a>
+                            <a href="https://www.farbegestaltung.de/wp-content/uploads/Hinweisblatt-Schueler-AVdual.pdf" target="_blank" class="btn btn-sm btn-glass">
+                                <i class="fas fa-info"></i> Merkblatt
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weitere Links (Kompakt) -->
+            <div class="more-links mt-5">
+                <h4>Weitere Informationen</h4>
+                <div class="link-tags">
+                    <a href="https://www.farbegestaltung.de/wp-content/uploads/Informationssammlung-Stand-02-2025.pdf" target="_blank" class="tag-link">Kontaktliste</a>
+                    <a href="https://www.farbegestaltung.de/wp-content/uploads/SchulPlan25_26_A4.pdf" target="_blank" class="tag-link">Schuljahresplan</a>
+                    <a href="https://bewo.kultus-bw.de/" target="_blank" class="tag-link">BewO Online-Bewerbung</a>
+                    <a href="https://www.hwk-stuttgart.de/lehrstellenboerse" target="_blank" class="tag-link">Lehrstellenbörse</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer class="footer">
         <div class="container text-center">
-            <p class="mb-4"><strong>Meldestelle der beruflichen Schulen Stuttgart</strong></p>
-            <p>Leobener Str. 97 • 70469 Stuttgart • Tel: 0711 / 216-60277</p>
-            <div class="mt-4">
-                <small>© 2026 Landeshauptstadt Stuttgart</small>
-            </div>
+            <p><strong>Meldestelle der beruflichen Schulen Stuttgart</strong></p>
+            <p class="footer-meta">Leobener Str. 97 • 70469 Stuttgart • Tel: 0711 / 216-60277</p>
+            <p class="footer-meta mt-2">© 2026 Landeshauptstadt Stuttgart</p>
         </div>
     </footer>
 
