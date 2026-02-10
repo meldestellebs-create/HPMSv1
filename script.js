@@ -1,340 +1,233 @@
 
 // ==========================================
-// NAVIGATION & SELECTION LOGIC
+// GLOBALE STEUERUNG (Tabs)
 // ==========================================
+function switchTool(toolId) {
+    // Buttons
+    document.querySelectorAll('.tool-tab').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + toolId).classList.add('active');
 
-function startTool(toolName) {
-    document.getElementById('orientation-selection').classList.add('hidden');
-    document.getElementById('tool-container').classList.remove('hidden');
-    document.getElementById('tool-container').classList.add('animate-in');
-
-    if (toolName === 'wizard') {
-        document.getElementById('wizard-content').classList.remove('hidden');
-        document.getElementById('path-content').classList.add('hidden');
-    } else if (toolName === 'path') {
-        document.getElementById('path-content').classList.remove('hidden');
-        document.getElementById('wizard-content').classList.add('hidden');
-    }
+    // Sections
+    document.querySelectorAll('.tool-section').forEach(s => s.classList.add('hidden'));
+    const activeSection = document.getElementById('tool-' + toolId);
+    activeSection.classList.remove('hidden');
+    activeSection.classList.add('animate-in');
 }
 
-function backToSelection() {
-    document.getElementById('tool-container').classList.add('hidden');
-    document.getElementById('orientation-selection').classList.remove('hidden');
-    document.getElementById('orientation-selection').classList.add('animate-in');
+// =========================================================
+// TOOL 1: BQW-2 (Wizard Logik - Mit kompletter Datenbank)
+// =========================================================
+let bqwStand = '';
 
-    // Reset states
-    resetWizard(); 
-    resetPathTool();
-}
-
-// ==========================================
-// TOOL 1: WIZARD (VABO/AVdual + DB)
-// ==========================================
-let selectedBildungsstand = '';
-let selectedZiel = '';
-
-const zielOptionen = {
+// Optionen Step 2
+const bqwZielOptionen = {
     kein: [
-        { id: 'deutsch', label: 'Deutsch lernen', icon: '🗣️', desc: 'Deutsche Sprache erlernen' },
-        { id: 'hauptschul', label: 'Hauptschulabschluss', icon: '📝', desc: 'Den Abschluss nachholen' },
-        { id: 'ausbildung', label: 'Ausbildungsvorbereitung', icon: '🛠️', desc: 'Bereit für die Ausbildung werden' }
+        { id: 'deutsch', label: 'Deutsch lernen', icon: '🗣️', desc: 'Sprache erlernen' },
+        { id: 'hauptschul', label: 'Hauptschulabschluss', icon: '📝', desc: 'Abschluss nachholen' },
+        { id: 'orientierung', label: 'Orientierung', icon: '🧭', desc: 'Berufliche Orientierung' },
+        { id: 'ausbildung', label: 'Ausbildung', icon: '🎯', desc: 'Ausbildung beginnen' }
     ],
     hauptschul: [
-        { id: 'mittlerer', label: 'Mittlere Reife', icon: '📚', desc: 'Weiter zur Fachschulreife' },
-        { id: 'ausbildung', label: 'Ausbildung', icon: '🎓', desc: 'Direkt in den Beruf starten' },
-        { id: 'verbessern', label: 'Abschluss verbessern', icon: '📈', desc: 'Noten verbessern & Praxis' }
+        { id: 'mittlerer', label: 'Mittlere Reife', icon: '📚', desc: 'Fachschulreife' },
+        { id: 'orientierung', label: 'Orientierung', icon: '🧭', desc: 'Beruflich orientieren' },
+        { id: 'ausbildung', label: 'Ausbildung', icon: '🎯', desc: 'Lehre beginnen' }
     ],
     mittlerer: [
-        { id: 'bk', label: 'Berufskolleg', icon: '💼', desc: 'Fachhochschulreife & Assistent' },
-        { id: 'gymnasium', label: 'Berufliches Gymnasium', icon: '🏛️', desc: 'Abitur machen' },
-        { id: 'ausbildung', label: 'Ausbildung', icon: '🎓', desc: 'Duale Ausbildung beginnen' }
+        { id: 'fhr', label: 'Fachhochschulreife', icon: '🎓', desc: 'BK besuchen' },
+        { id: 'abitur', label: 'Abitur', icon: '🎖️', desc: 'Allg. Hochschulreife' },
+        { id: 'orientierung', label: 'Orientierung', icon: '🧭', desc: 'Beruflich orientieren' },
+        { id: 'ausbildung', label: 'Ausbildung', icon: '🎯', desc: 'Lehre beginnen' }
     ]
 };
 
-const bildungswegeData = {
+// DATENBANK (Vollständig inkl. PDF Links)
+const bqwData = {
     kein: {
         deutsch: [
             {
-                title: "VABO",
-                subtitle: "Vorqualifizierungsjahr Arbeit/Beruf",
-                desc: "Intensiver Spracherwerb für Neuzugewanderte ohne Deutschkenntnisse.",
-                badges: ["Schulplatz", "Deutsch A1-B1"],
-                // FIXED PDF LINK
-                link: "Anfrage-VABO-SJ-26-27-Version-03-02-2026.pdf",
-                linkText: "Vermittlungsanfrage VABO (PDF)"
+                name: "VABO - Vorqualifizierungsjahr Arbeit/Beruf",
+                desc: "Für junge Menschen ohne Deutschkenntnisse.",
+                details: ["Dauer: 1 Jahr", "Ziel: Deutsch A1-B1", "Schulplatzgarantie"],
+                // PDF LINK MIT LEERZEICHEN (Encoded)
+                link: "Anfrage%20VABO%20SJ%2026-27%20Version%2003-02-2026.pdf",
+                btn: "Vermittlungsanfrage VABO (PDF)"
+            },
+            {
+                name: "Integrationskurs",
+                desc: "Bundesweites Angebot zum Spracherwerb.",
+                details: ["Dauer: 6-10 Monate", "Träger: VHS u.a."],
+                link: "https://www.vhs-stuttgart.de",
+                btn: "Zur VHS Stuttgart"
             }
         ],
         hauptschul: [
             {
-                title: "AVdual",
-                subtitle: "Ausbildungsvorbereitung dual",
-                desc: "Hole deinen Hauptschulabschluss nach und sammle praktische Erfahrung im Betrieb.",
-                badges: ["Hauptschulabschluss", "Praktikum"],
+                name: "AVdual",
+                desc: "Ausbildungsvorbereitung dual - Hauptschulabschluss nachholen.",
+                details: ["Dauer: 1 Jahr", "Viel Praxis", "Sozialpäd. Begleitung"],
                 link: "AVdual%202026%20-%20Vermittlungsanfrage.pdf",
-                linkText: "Vermittlungsanfrage AVdual (PDF)"
+                btn: "Vermittlungsanfrage AVdual (PDF)"
+            },
+            {
+                name: "Schulfremdenprüfung",
+                desc: "Abschluss ohne Schulbesuch durch Prüfung.",
+                details: ["Vorbereitung nötig", "Anmeldung beim Schulamt"],
+                link: "#",
+                btn: "Infos Schulamt"
+            },
+            {
+                name: "BvB (Berufsvorbereitende Bildungsmaßnahme)",
+                desc: "Vorbereitung auf Ausbildung durch die Agentur für Arbeit.",
+                details: ["Dauer: bis 12 Monate", "Mit Vergütung (BAB)"],
+                link: "https://www.arbeitsagentur.de",
+                btn: "Agentur für Arbeit"
             }
         ],
-        ausbildung: [
-            {
-                title: "AVdual",
-                subtitle: "Ausbildungsvorbereitung",
-                desc: "Perfekt zur Vorbereitung auf eine Ausbildung. Du bist im Betrieb und in der Schule.",
-                badges: ["Praxis", "Orientierung"],
-                link: "AVdual%202026%20-%20Vermittlungsanfrage.pdf",
-                linkText: "Vermittlungsanfrage AVdual (PDF)"
-            }
-        ]
+        orientierung: [ 
+            { name: "Freiwilligendienste (FSJ / FÖJ)", desc: "Freiwilliges Soziales Jahr.", details: ["Dauer: 12 Monate", "Taschengeld"], link: "https://www.jugendagentur.net", btn: "Jugendagentur" },
+            { name: "EQ (Einstiegsqualifizierung)", desc: "Langzeitpraktikum im Betrieb.", details: ["Dauer: 6-12 Monate", "Vergütung"], link: "https://www.arbeitsagentur.de", btn: "Agentur für Arbeit" }
+        ],
+        ausbildung: [ { name: "AVdual", desc: "Vorbereitung auf Ausbildung.", details: ["Praktikum + Schule"], link: "AVdual%202026%20-%20Vermittlungsanfrage.pdf", btn: "Vermittlungsanfrage AVdual" } ]
     },
     hauptschul: {
         mittlerer: [
             {
-                title: "2-jährige Berufsfachschule",
-                subtitle: "Fachschulreife",
-                desc: "Führt in zwei Jahren zur Mittleren Reife. Verschiedene Profile.",
-                badges: ["Mittlere Reife", "Vollzeit"],
+                name: "2-jährige Berufsfachschule (2BFS)",
+                desc: "Weg zur Mittleren Reife.",
+                details: ["Dauer: 2 Jahre", "Profile: Technik, Pflege, Hauswirtschaft"],
                 link: "https://www.farbegestaltung.de/wp-content/uploads/Einjaehrige-Berufsfachschule-Angebote-Stuttgart-02_2025.pdf",
-                linkText: "Infoblatt (PDF)"
+                btn: "Infoblatt (PDF)"
+            },
+            {
+                name: "Berufsaufbauschule (BAS)",
+                desc: "Mittlere Reife nach abgeschlossener Ausbildung.",
+                details: ["Dauer: 1 Jahr"],
+                link: "#",
+                btn: "Infos BAS"
             }
         ],
-        ausbildung: [
-            {
-                title: "Duale Ausbildung",
-                subtitle: "Betrieb & Schule",
-                desc: "Der Klassiker: Du lernst im Betrieb und gehst in die Berufsschule.",
-                badges: ["Gehalt", "Berufsabschluss"],
-                link: "https://www.hwk-stuttgart.de/lehrstellenboerse",
-                linkText: "Lehrstellenbörse HWK"
-            }
-        ],
-        verbessern: [
-            {
-                title: "AVdual",
-                subtitle: "Abschluss verbessern",
-                desc: "Du hast schon einen Abschluss, willst aber bessere Noten für die Ausbildungssuche?",
-                badges: ["Verbesserung", "Praxis"],
-                link: "AVdual%202026%20-%20Vermittlungsanfrage.pdf",
-                linkText: "Vermittlungsanfrage AVdual (PDF)"
-            }
-        ]
+        ausbildung: [ { name: "Duale Ausbildung", desc: "Lehre im Betrieb + Berufsschule.", details: ["Dauer: 3 Jahre"], link: "https://www.hwk-stuttgart.de", btn: "HWK Lehrstellen" } ],
+        orientierung: [ { name: "AVdual", desc: "Zur Notenverbesserung.", details: ["Praxis"], link: "AVdual%202026%20-%20Vermittlungsanfrage.pdf", btn: "Anfrage AVdual" } ]
     },
     mittlerer: {
-        bk: [
-            {
-                title: "Berufskolleg",
-                subtitle: "Fachhochschulreife",
-                desc: "Kombiniere berufliche Bildung mit der Fachhochschulreife.",
-                badges: ["FHR", "Berufsausbildung"],
-                link: "https://bewo.kultus-bw.de/",
-                linkText: "Bewerbung (BewO)"
-            }
-        ],
-        gymnasium: [
-            {
-                title: "Berufliches Gymnasium",
-                subtitle: "Allgemeine Hochschulreife",
-                desc: "Der Weg zum Abitur mit beruflichem Schwerpunkt.",
-                badges: ["Abitur", "3 Jahre"],
-                link: "https://bewo.kultus-bw.de/",
-                linkText: "Bewerbung (BewO)"
-            }
-        ],
-        ausbildung: [
-            {
-                title: "Duale Ausbildung",
-                subtitle: "Karriere im Beruf",
-                desc: "Mit mittlerer Reife stehen dir viele anspruchsvolle Ausbildungsberufe offen.",
-                badges: ["Karriere", "Vergütung"],
-                link: "https://www.arbeitsagentur.de/bildung/ausbildung",
-                linkText: "Berufsberatung"
-            }
-        ]
+        fhr: [ { name: "Berufskolleg (BK)", desc: "Führt zur Fachhochschulreife.", details: ["Dauer: 1-2 Jahre"], link: "https://bewo.kultus-bw.de", btn: "BewO Bewerbung" } ],
+        abitur: [ { name: "Berufliches Gymnasium", desc: "Weg zum Abitur.", details: ["Dauer: 3 Jahre", "Schnitt 3,0 nötig"], link: "https://bewo.kultus-bw.de", btn: "BewO Bewerbung" } ],
+        ausbildung: [ { name: "Duale Ausbildung", desc: "Anspruchsvolle Berufe.", details: ["Karrierechancen"], link: "https://www.ihk.de", btn: "IHK Infos" } ],
+        orientierung: [ { name: "Freiwilligendienste", desc: "FSJ / FÖJ / BFD", details: ["6-18 Monate"], link: "https://www.jugendagentur.net", btn: "Jugendagentur" } ]
     }
 };
 
-function selectBildungsstand(stand) {
-    selectedBildungsstand = stand;
-    document.querySelectorAll('#step1 .option-card').forEach(c => c.classList.remove('selected'));
-    event.currentTarget.classList.add('selected');
-    renderZielOptions(stand);
-    setTimeout(() => {
-        document.getElementById('step1').style.display = 'none';
-        document.getElementById('step2').style.display = 'block';
-    }, 300);
-}
+function bqwSelectStand(stand) {
+    bqwStand = stand;
+    document.getElementById('bqw-step1').classList.add('hidden');
+    document.getElementById('bqw-step2').classList.remove('hidden');
 
-function renderZielOptions(stand) {
-    const container = document.getElementById('zielOptionsGrid');
-    container.innerHTML = '';
-    const options = zielOptionen[stand] || [];
-    options.forEach(opt => {
-        const card = document.createElement('div');
-        card.className = 'option-card animate-in';
-        card.onclick = () => showResults(opt.id);
-        card.innerHTML = `<div class="card-icon-wrapper">${opt.icon}</div><h3>${opt.label}</h3><p>${opt.desc}</p>`;
-        container.appendChild(card);
-    });
-}
+    const grid = document.getElementById('bqw-ziel-grid');
+    grid.innerHTML = '';
 
-function showResults(zielId) {
-    selectedZiel = zielId;
-    document.getElementById('step2').style.display = 'none';
-    document.getElementById('results').style.display = 'block';
-    const container = document.getElementById('resultsGrid');
-    container.innerHTML = '';
-    const data = bildungswegeData[selectedBildungsstand]?.[selectedZiel] || [];
-
-    if (data.length === 0) {
-        container.innerHTML = '<p class="text-center">Keine direkten Treffer.</p>';
-        return;
-    }
-
-    data.forEach(item => {
-        const badges = item.badges.map(b => `<span class="badge">${b}</span>`).join('');
-        const card = document.createElement('div');
-        card.className = 'result-card animate-in';
-        card.innerHTML = `
-            <div class="result-header"><h3>${item.title}</h3><span class="result-sub">${item.subtitle}</span></div>
-            <div class="result-badges">${badges}</div>
-            <p class="result-desc">${item.desc}</p>
-            <a href="${item.link}" target="_blank" class="btn btn-primary btn-full">${item.linkText}</a>
+    (bqwZielOptionen[stand] || []).forEach(opt => {
+        grid.innerHTML += `
+            <div class="option-card animate-in" onclick="bqwShowResults('${opt.id}')">
+                <div class="card-icon-wrapper">${opt.icon}</div>
+                <h3>${opt.label}</h3>
+                <p>${opt.desc}</p>
+            </div>
         `;
-        container.appendChild(card);
     });
 }
 
-function resetWizard() {
-    selectedBildungsstand = '';
-    selectedZiel = '';
-    document.getElementById('results').style.display = 'none';
-    document.getElementById('step2').style.display = 'none';
-    document.getElementById('step1').style.display = 'block';
+function bqwShowResults(ziel) {
+    document.getElementById('bqw-step2').classList.add('hidden');
+    document.getElementById('bqw-results').classList.remove('hidden');
+
+    const grid = document.getElementById('bqw-results-grid');
+    grid.innerHTML = '';
+
+    const results = bqwData[bqwStand]?.[ziel] || [];
+    if(results.length === 0) grid.innerHTML = '<p>Keine Ergebnisse gefunden.</p>';
+
+    results.forEach(res => {
+        const detailsHtml = res.details.map(d => `<li>${d}</li>`).join('');
+        grid.innerHTML += `
+            <div class="result-card animate-in">
+                <div class="result-header"><h3>${res.name}</h3></div>
+                <p class="result-desc">${res.desc}</p>
+                <ul class="result-details">${detailsHtml}</ul>
+                <div class="result-footer">
+                    <a href="${res.link}" target="_blank" class="btn btn-primary btn-full">${res.btn}</a>
+                </div>
+            </div>
+        `;
+    });
 }
 
-function stepBack() {
-    document.getElementById('step2').style.display = 'none';
-    document.getElementById('step1').style.display = 'block';
+function bqwReset() {
+    bqwStand = '';
+    document.getElementById('bqw-results').classList.add('hidden');
+    document.getElementById('bqw-step2').classList.add('hidden');
+    document.getElementById('bqw-step1').classList.remove('hidden');
 }
 
-
-// ==========================================
-// TOOL 2: BILDUNGSWEGETOOL (DROPDOWN LOGIC)
-// ==========================================
-
-const pathMap = {
-    kein: [
-        { value: 'hsa', label: 'Hauptschulabschluss' },
-        { value: 'ausbildung', label: 'Ausbildung (AVdual)' }
-    ],
-    hsa: [
-        { value: 'mr', label: 'Mittlere Reife' },
-        { value: 'ausbildung', label: 'Berufsausbildung' }
-    ],
-    mr: [
-        { value: 'fhr', label: 'Fachhochschulreife' },
-        { value: 'abi', label: 'Abitur' },
-        { value: 'ausbildung', label: 'Berufsausbildung' }
-    ],
-    fhr: [
-        { value: 'studium_fh', label: 'Studium (FH)' },
-        { value: 'ausbildung', label: 'Berufsausbildung' }
-    ],
-    abi: [
-        { value: 'studium', label: 'Studium (Uni/FH)' },
-        { value: 'ausbildung', label: 'Berufsausbildung' }
-    ]
+// =========================================================
+// TOOL 2: BW-Option-7 (Bildungswegetool - Dropdowns)
+// =========================================================
+const bw7Targets = {
+    kein: { hsa: "Hauptschulabschluss", ausbildung: "Ausbildung (AVdual)" },
+    hsa: { mr: "Mittlere Reife", ausbildung: "Berufsausbildung" },
+    mr: { fhr: "Fachhochschulreife", abi: "Abitur", ausbildung: "Berufsausbildung" },
+    fhr: { studium_fh: "Studium (FH)", ausbildung: "Ausbildung" },
+    abi: { studium: "Studium (Uni/FH)", ausbildung: "Ausbildung" }
 };
 
-const pathDetails = {
-    'kein-hsa': { steps: ['VABO (bei Sprachbedarf)', 'AVdual'], desc: 'Der Weg führt über das AVdual oder VABO, um den Hauptschulabschluss nachzuholen.' },
-    'kein-ausbildung': { steps: ['AVdual'], desc: 'Über das AVdual in die Ausbildungsvorbereitung.' },
-    'hsa-mr': { steps: ['2-jährige Berufsfachschule (2BFS)', 'Berufsaufbauschule (nach Ausbildung)'], desc: 'Der klassische Weg zur Mittleren Reife führt über die zweijährige Berufsfachschule.' },
-    'hsa-ausbildung': { steps: ['Duale Ausbildung', '1-jährige Berufsfachschule'], desc: 'Direkter Einstieg in eine duale Ausbildung oder über die 1BFS.' },
-    'mr-abi': { steps: ['Berufliches Gymnasium (3 Jahre)'], desc: 'Mit einem Schnitt von 3,0 (D,M,E) kannst du auf das Berufliche Gymnasium.' },
-    'mr-fhr': { steps: ['Berufskolleg (BK)'], desc: 'Das Berufskolleg führt zur Fachhochschulreife.' },
-    'mr-ausbildung': { steps: ['Duale Ausbildung'], desc: 'Mit der Mittleren Reife stehen dir viele anspruchsvolle Berufe offen.' }
+const bw7Paths = {
+    'kein-hsa': { steps: ['Start: Ohne Abschluss', 'VABO (bei Sprachbedarf)', 'AVdual (Ausbildungsvorbereitung)', 'Ziel: Hauptschulabschluss'], info: 'Der Weg führt über das AVdual, um den Abschluss nachzuholen.' },
+    'kein-ausbildung': { steps: ['Start: Ohne Abschluss', 'AVdual', 'Ziel: Ausbildung'], info: 'AVdual macht dich fit für die Ausbildung durch Praktika.' },
+    'hsa-mr': { steps: ['Start: Hauptschulabschluss', '2-jährige Berufsfachschule (2BFS)', 'Ziel: Mittlere Reife'], info: 'Klassischer Weg über die 2BFS in zwei Jahren.' },
+    'hsa-ausbildung': { steps: ['Start: Hauptschulabschluss', 'Duale Ausbildung', 'Ziel: Geselle/Facharbeiter'], info: 'Direkter Einstieg in den Beruf.' },
+    'mr-abi': { steps: ['Start: Mittlere Reife', 'Berufliches Gymnasium (3 Jahre)', 'Ziel: Abitur'], info: 'Voraussetzung: Schnitt 3,0 in Hauptfächern (D,M,E).' },
+    'mr-fhr': { steps: ['Start: Mittlere Reife', 'Berufskolleg (BK)', 'Ziel: Fachhochschulreife'], info: 'Qualifiziert für FH-Studium und gehobene Ausbildungen.' },
+    'mr-ausbildung': { steps: ['Start: Mittlere Reife', 'Duale Ausbildung', 'Ziel: Beruf'], info: 'Gute Chancen auf anspruchsvolle Berufe (Bank, Industrie, IT).' },
+    'fhr-studium_fh': { steps: ['Start: Fachhochschulreife', 'Fachhochschule (FH)', 'Ziel: Bachelor'], info: 'Studium an einer Hochschule für Angewandte Wissenschaften.' },
+    'abi-studium': { steps: ['Start: Abitur', 'Universität / Hochschule', 'Ziel: Bachelor/Master'], info: 'Freie Wahl aller Studiengänge.' }
 };
 
-function updatePathOptions() {
-    const startVal = document.getElementById('pathStart').value;
-    const zielSelect = document.getElementById('pathZiel');
-
+function bw7UpdateTargets() {
+    const start = document.getElementById('bw7-start').value;
+    const zielSelect = document.getElementById('bw7-ziel');
     zielSelect.innerHTML = '<option value="" disabled selected>Ziel wählen...</option>';
-    zielSelect.disabled = true;
 
-    if (startVal && pathMap[startVal]) {
-        pathMap[startVal].forEach(opt => {
-            const option = document.createElement('option');
-            option.value = opt.value;
-            option.text = opt.label;
-            zielSelect.appendChild(option);
+    if (bw7Targets[start]) {
+        Object.entries(bw7Targets[start]).forEach(([key, label]) => {
+            zielSelect.innerHTML += `<option value="${key}">${label}</option>`;
         });
         zielSelect.disabled = false;
-    }
-    document.getElementById('path-visual-container').classList.add('hidden');
-}
-
-function calculatePath() {
-    const start = document.getElementById('pathStart').value;
-    const ziel = document.getElementById('pathZiel').value;
-    const key = `${start}-${ziel}`;
-    const container = document.getElementById('path-visual-container');
-    const timeline = document.getElementById('pathTimeline');
-    const details = document.getElementById('pathDetailsContent');
-    const detailsBox = document.getElementById('pathDetails');
-
-    if (pathDetails[key]) {
-        const info = pathDetails[key];
-
-        // Render Timeline
-        timeline.innerHTML = '';
-
-        // Start Node
-        timeline.innerHTML += `
-            <div class="timeline-node start">
-                <div class="t-icon">🏁</div>
-                <span>Start</span>
-            </div>
-        `;
-
-        // Steps
-        info.steps.forEach(step => {
-            timeline.innerHTML += `
-                <div class="timeline-connector"></div>
-                <div class="timeline-node step">
-                    <div class="t-icon">⚡</div>
-                    <span>${step}</span>
-                </div>
-            `;
-        });
-
-        // Ziel Node
-        timeline.innerHTML += `
-            <div class="timeline-connector"></div>
-            <div class="timeline-node end">
-                <div class="t-icon">🏆</div>
-                <span>Ziel</span>
-            </div>
-        `;
-
-        // Details
-        details.innerHTML = `<p>${info.desc}</p>`;
-        detailsBox.classList.remove('hidden');
-        container.classList.remove('hidden');
-        container.classList.add('animate-in');
     } else {
-        // Fallback for generic paths
-        timeline.innerHTML = '<p class="text-center">Weg wird berechnet...</p>';
-        container.classList.remove('hidden');
+        zielSelect.disabled = true;
     }
+    document.getElementById('bw7-visual').classList.add('hidden');
 }
 
-function resetPathTool() {
-    document.getElementById('pathStart').value = "";
-    document.getElementById('pathZiel').innerHTML = '<option value="" disabled selected>Zuerst Start wählen...</option>';
-    document.getElementById('pathZiel').disabled = true;
-    document.getElementById('path-visual-container').classList.add('hidden');
-}
+function bw7ShowPath() {
+    const start = document.getElementById('bw7-start').value;
+    const ziel = document.getElementById('bw7-ziel').value;
+    const key = `${start}-${ziel}`;
+    const data = bw7Paths[key] || { steps: ['Start', 'Individueller Weg', 'Ziel'], info: 'Bitte Beratungstermin vereinbaren.' };
 
-function scrollToElement(id) {
-    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    // Timeline bauen
+    const timeline = document.getElementById('bw7-timeline');
+    timeline.innerHTML = '';
+
+    data.steps.forEach((step, index) => {
+        const isLast = index === data.steps.length - 1;
+        timeline.innerHTML += `
+            <div class="timeline-step animate-in" style="animation-delay: ${index * 0.1}s">
+                <div class="t-circle">${index + 1}</div>
+                <div class="t-text">${step}</div>
+            </div>
+            ${!isLast ? '<div class="t-line"></div>' : ''}
+        `;
+    });
+
+    document.getElementById('bw7-info').innerText = data.info;
+    document.getElementById('bw7-visual').classList.remove('hidden');
 }
