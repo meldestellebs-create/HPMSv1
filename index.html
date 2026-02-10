@@ -44,143 +44,118 @@
                 Wir nehmen Vermittlungsanfragen für die beiden Schularten <strong>VABO</strong> und <strong>AVdual</strong> entgegen.
             </p>
 
-            <div class="hero-actions animate-in delay-3">
-                <button onclick="scrollToElement('orientierung')" class="btn btn-primary btn-glow">
-                    <i class="fas fa-compass"></i> Zur Orientierung
+            <!-- TOOL SWITCHER (Tabs) -->
+            <div class="tool-switcher animate-in delay-3">
+                <button onclick="switchTool('bqw')" id="tab-bqw" class="tool-tab active">
+                    <i class="fas fa-map-marked-alt"></i> Bildungs- & Qualifizierungswege
                 </button>
-                <button onclick="scrollToElement('downloads')" class="btn btn-glass">
-                    <i class="fas fa-download"></i> Direkt zu den Formularen
+                <button onclick="switchTool('bw7')" id="tab-bw7" class="tool-tab">
+                    <i class="fas fa-network-wired"></i> Bildungswegetool
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 1: ORIENTIERUNG (Auswahl) -->
-    <section id="orientierung" class="container section-spacing">
-        <div class="section-header text-center mb-5">
-            <span class="section-tag">Orientierung</span>
-            <h2>Welcher Weg passt zu dir?</h2>
-            <p>Wähle ein Werkzeug zur Unterstützung.</p>
-        </div>
+    <!-- MAIN TOOL AREA -->
+    <main class="container section-spacing">
 
-        <!-- AUSWAHL-BOXEN (Startansicht) -->
-        <div id="orientation-selection" class="grid-cols-2 animate-in">
-
-            <!-- Box 1: Das "Plakat" (VABO/AVdual Wizard) -->
-            <div class="selection-card" onclick="startTool('wizard')">
-                <div class="card-icon icon-purple"><i class="fas fa-map-marked-alt"></i></div>
-                <div class="card-content">
-                    <h3>Bildungs- und Qualifizierungswege</h3>
-                    <p>Finde heraus, ob VABO oder AVdual für dich in Frage kommen. Schritt für Schritt.</p>
-                    <button class="btn btn-sm btn-primary mt-2">Starten <i class="fas fa-arrow-right"></i></button>
+        <!-- TOOL 1: BQW-2 (Wizard / Kacheln) -->
+        <div id="tool-bqw" class="tool-section animate-in">
+            <div class="glass-card wizard-container">
+                <div class="section-header text-center">
+                    <span class="section-tag">Interaktiver Wegweiser</span>
+                    <h2>Bildungs- und Qualifizierungswege</h2>
+                    <p>Finde das passende Angebot für deine Situation.</p>
                 </div>
-            </div>
 
-            <!-- Box 2: Das Bildungswegetool (NEU: Full Functionality) -->
-            <div class="selection-card" onclick="startTool('path')">
-                <div class="card-icon icon-blue"><i class="fas fa-network-wired"></i></div>
-                <div class="card-content">
-                    <h3>Bildungswegetool</h3>
-                    <p>Interaktiver Wegweiser: Von deinem aktuellen Stand zum Wunschziel. Alle Möglichkeiten im Überblick.</p>
-                    <button class="btn btn-sm btn-glass mt-2">Erkunden <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- TOOL CONTAINER -->
-        <div id="tool-container" class="glass-card wizard-container hidden">
-
-            <!-- Header im Tool -->
-            <div class="tool-header mb-4">
-                <button onclick="backToSelection()" class="btn-text"><i class="fas fa-arrow-left"></i> Zurück zur Übersicht</button>
-            </div>
-
-            <!-- TOOL 1: WIZARD (VABO/AVdual Logic) -->
-            <div id="wizard-content" class="hidden">
-                <h3 class="text-center mb-4">Bildungs- und Qualifizierungswege in Stuttgart</h3>
-
-                <!-- Step 1 -->
-                <div id="step1">
-                    <p class="text-center mb-4">Welchen Schulabschluss hast du aktuell?</p>
+                <!-- Step 1: Bildungsstand -->
+                <div id="bqw-step1">
+                    <p class="text-center mb-4 text-muted">Wo stehst du gerade?</p>
                     <div class="grid-cols-3">
-                        <div class="option-card" onclick="selectBildungsstand('kein')">
+                        <div class="option-card" onclick="bqwSelectStand('kein')">
                             <div class="card-icon-wrapper">🚀</div>
                             <h3>Kein Abschluss / Neu hier</h3>
-                            <p>Kein Abschluss oder Deutsch lernen.</p>
+                            <p>Ich habe noch keinen Abschluss oder lerne Deutsch.</p>
                         </div>
-                        <div class="option-card" onclick="selectBildungsstand('hauptschul')">
+                        <div class="option-card" onclick="bqwSelectStand('hauptschul')">
                             <div class="card-icon-wrapper">📝</div>
                             <h3>Hauptschulabschluss</h3>
-                            <p>Erfolgreich bestanden.</p>
+                            <p>Ich habe den Hauptschulabschluss bestanden.</p>
                         </div>
-                        <div class="option-card" onclick="selectBildungsstand('mittlerer')">
+                        <div class="option-card" onclick="bqwSelectStand('mittlerer')">
                             <div class="card-icon-wrapper">🎓</div>
                             <h3>Mittlere Reife</h3>
-                            <p>Realschule abgeschlossen.</p>
+                            <p>Ich habe die Realschule abgeschlossen.</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Step 2 -->
-                <div id="step2" class="hidden">
-                    <p class="text-center mb-4">Was ist dein nächstes Ziel?</p>
-                    <div id="zielOptionsGrid" class="grid-cols-3"></div>
+                <!-- Step 2: Ziel -->
+                <div id="bqw-step2" class="hidden">
+                    <div class="tool-nav">
+                        <button onclick="bqwReset()" class="btn-text"><i class="fas fa-arrow-left"></i> Zurück</button>
+                        <p class="text-center text-muted flex-grow">Was ist dein Ziel?</p>
+                    </div>
+                    <div id="bqw-ziel-grid" class="grid-cols-3"></div>
                 </div>
 
-                <!-- Results -->
-                <div id="results" class="hidden">
-                    <div class="text-center mb-4">
-                        <button onclick="resetWizard()" class="btn btn-sm btn-glass"><i class="fas fa-redo"></i> Neu starten</button>
+                <!-- Step 3: Ergebnisse -->
+                <div id="bqw-results" class="hidden">
+                    <div class="tool-nav">
+                        <button onclick="bqwReset()" class="btn-text"><i class="fas fa-redo"></i> Neustart</button>
+                        <p class="text-center text-muted flex-grow">Deine Möglichkeiten</p>
                     </div>
-                    <div id="resultsGrid" class="results-list"></div>
-                </div>
-            </div>
-
-            <!-- TOOL 2: PATH EXPLORER (Bildungswegetool - Full Logic) -->
-            <div id="path-content" class="hidden">
-                <h3 class="text-center mb-4">Interaktives Bildungswegetool</h3>
-
-                <div class="path-controls-container">
-                    <!-- Start Selection -->
-                    <div class="control-group">
-                        <label class="control-label"><i class="fas fa-map-marker-alt"></i> Dein Startpunkt:</label>
-                        <select id="pathStart" class="path-select" onchange="updatePathOptions()">
-                            <option value="" disabled selected>Bitte wählen...</option>
-                            <option value="kein">Kein Schulabschluss</option>
-                            <option value="hsa">Hauptschulabschluss</option>
-                            <option value="mr">Mittlere Reife</option>
-                            <option value="fhr">Fachhochschulreife</option>
-                            <option value="abi">Abitur</option>
-                        </select>
-                    </div>
-
-                    <!-- Ziel Selection -->
-                    <div class="control-group">
-                        <label class="control-label"><i class="fas fa-flag-checkered"></i> Dein Ziel:</label>
-                        <select id="pathZiel" class="path-select" onchange="calculatePath()" disabled>
-                            <option value="" disabled selected>Zuerst Start wählen...</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Visualisierung -->
-                <div id="path-visual-container" class="path-visual-container hidden">
-                    <div class="path-timeline" id="pathTimeline">
-                        <!-- Wird dynamisch gefüllt -->
-                    </div>
-
-                    <div class="path-details-box hidden" id="pathDetails">
-                        <h4>Details zum Weg</h4>
-                        <div id="pathDetailsContent"></div>
-                    </div>
+                    <div id="bqw-results-grid" class="results-list"></div>
                 </div>
             </div>
-
         </div>
-    </section>
 
-    <!-- SECTION 2: DOWNLOADS (Boxen) -->
+        <!-- TOOL 2: BW-Option-7 (Dropdowns) -->
+        <div id="tool-bw7" class="tool-section hidden">
+            <div class="glass-card wizard-container">
+                <div class="section-header text-center">
+                    <span class="section-tag">Pfadfinder</span>
+                    <h2>Bildungswegetool</h2>
+                    <p>Plane deinen Weg von A nach B.</p>
+                </div>
+
+                <div class="bw7-container">
+                    <!-- Controls -->
+                    <div class="bw7-controls">
+                        <div class="control-group">
+                            <label><i class="fas fa-map-marker-alt"></i> Aktueller Stand:</label>
+                            <select id="bw7-start" onchange="bw7UpdateTargets()">
+                                <option value="" disabled selected>Bitte wählen...</option>
+                                <option value="kein">Kein Schulabschluss</option>
+                                <option value="hsa">Hauptschulabschluss</option>
+                                <option value="mr">Mittlere Reife</option>
+                                <option value="fhr">Fachhochschulreife</option>
+                                <option value="abi">Abitur</option>
+                            </select>
+                        </div>
+
+                        <div class="arrow-separator"><i class="fas fa-arrow-right"></i></div>
+
+                        <div class="control-group">
+                            <label><i class="fas fa-flag-checkered"></i> Dein Ziel:</label>
+                            <select id="bw7-ziel" onchange="bw7ShowPath()" disabled>
+                                <option value="" disabled selected>Ziel wählen...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Visualisierung -->
+                    <div id="bw7-visual" class="bw7-visual hidden">
+                        <div class="timeline-container" id="bw7-timeline"></div>
+                        <div class="path-info-box" id="bw7-info"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- SECTION: DOWNLOADS -->
     <section id="downloads" class="container section-spacing">
         <div class="glass-card p-5">
             <div class="section-header text-center mb-5">
@@ -189,14 +164,15 @@
             </div>
 
             <div class="grid-cols-2">
-                <!-- VABO Box - FIXED PDF LINK -->
+                <!-- VABO Box -->
                 <div class="download-box">
                     <div class="box-icon vabo-icon"><i class="fas fa-globe"></i></div>
                     <div class="box-content">
                         <h3>VABO</h3>
                         <p>Für Jugendliche ohne Deutschkenntnisse.</p>
                         <div class="btn-group">
-                            <a href="Anfrage-VABO-SJ-26-27-Version-03-02-2026.pdf" target="_blank" class="btn btn-sm btn-primary">
+                            <!-- KORREKTER LINK MIT LEERZEICHEN (Encoded) -->
+                            <a href="Anfrage%20VABO%20SJ%2026-27%20Version%2003-02-2026.pdf" target="_blank" class="btn btn-sm btn-primary">
                                 <i class="fas fa-download"></i> Vermittlungsanfrage VABO
                             </a>
                             <a href="https://www.farbegestaltung.de/wp-content/uploads/VABO_Hinweisblatt_Maerz_2025.pdf" target="_blank" class="btn btn-sm btn-glass">
