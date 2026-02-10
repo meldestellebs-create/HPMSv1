@@ -66,29 +66,29 @@
         <!-- AUSWAHL-BOXEN (Startansicht) -->
         <div id="orientation-selection" class="grid-cols-2 animate-in">
 
-            <!-- Box 1: Das "Plakat" (VABO/AVdual Wizard + Full DB) -->
+            <!-- Box 1: Das "Plakat" (VABO/AVdual Wizard) -->
             <div class="selection-card" onclick="startTool('wizard')">
                 <div class="card-icon icon-purple"><i class="fas fa-map-marked-alt"></i></div>
                 <div class="card-content">
                     <h3>Bildungs- und Qualifizierungswege</h3>
-                    <p>Finde heraus, welcher Bildungsweg für dich passt. Mit allen Schularten und Möglichkeiten.</p>
+                    <p>Finde heraus, ob VABO oder AVdual für dich in Frage kommen. Schritt für Schritt.</p>
                     <button class="btn btn-sm btn-primary mt-2">Starten <i class="fas fa-arrow-right"></i></button>
                 </div>
             </div>
 
-            <!-- Box 2: Das Bildungswegetool (Allgemeine Wege) -->
+            <!-- Box 2: Das Bildungswegetool (NEU: Full Functionality) -->
             <div class="selection-card" onclick="startTool('path')">
                 <div class="card-icon icon-blue"><i class="fas fa-network-wired"></i></div>
                 <div class="card-content">
                     <h3>Bildungswegetool</h3>
-                    <p>Visuelle Übersicht der Bildungswege. Wie komme ich von der Hauptschule zum Abitur?</p>
+                    <p>Interaktiver Wegweiser: Von deinem aktuellen Stand zum Wunschziel. Alle Möglichkeiten im Überblick.</p>
                     <button class="btn btn-sm btn-glass mt-2">Erkunden <i class="fas fa-arrow-right"></i></button>
                 </div>
             </div>
 
         </div>
 
-        <!-- TOOL CONTAINER (Wird eingeblendet) -->
+        <!-- TOOL CONTAINER -->
         <div id="tool-container" class="glass-card wizard-container hidden">
 
             <!-- Header im Tool -->
@@ -96,7 +96,7 @@
                 <button onclick="backToSelection()" class="btn-text"><i class="fas fa-arrow-left"></i> Zurück zur Übersicht</button>
             </div>
 
-            <!-- TOOL 1: WIZARD (Full Database) -->
+            <!-- TOOL 1: WIZARD (VABO/AVdual Logic) -->
             <div id="wizard-content" class="hidden">
                 <h3 class="text-center mb-4">Bildungs- und Qualifizierungswege in Stuttgart</h3>
 
@@ -137,20 +137,42 @@
                 </div>
             </div>
 
-            <!-- TOOL 2: PATH EXPLORER (Bildungswegetool) -->
+            <!-- TOOL 2: PATH EXPLORER (Bildungswegetool - Full Logic) -->
             <div id="path-content" class="hidden">
-                <h3 class="text-center mb-4">Bildungswegetool</h3>
-                <p class="text-center text-muted mb-4">Klicke auf deinen aktuellen Stand, um Möglichkeiten zu sehen.</p>
+                <h3 class="text-center mb-4">Interaktives Bildungswegetool</h3>
 
-                <div class="path-explorer">
-                    <div class="path-buttons">
-                        <button class="path-btn" onclick="showPath('hsa')">Hauptschulabschluss</button>
-                        <button class="path-btn" onclick="showPath('mr')">Mittlere Reife</button>
-                        <button class="path-btn" onclick="showPath('avdual')">AVdual / VABO</button>
+                <div class="path-controls-container">
+                    <!-- Start Selection -->
+                    <div class="control-group">
+                        <label class="control-label"><i class="fas fa-map-marker-alt"></i> Dein Startpunkt:</label>
+                        <select id="pathStart" class="path-select" onchange="updatePathOptions()">
+                            <option value="" disabled selected>Bitte wählen...</option>
+                            <option value="kein">Kein Schulabschluss</option>
+                            <option value="hsa">Hauptschulabschluss</option>
+                            <option value="mr">Mittlere Reife</option>
+                            <option value="fhr">Fachhochschulreife</option>
+                            <option value="abi">Abitur</option>
+                        </select>
                     </div>
 
-                    <div id="path-visual" class="path-visual hidden">
-                        <div class="path-steps"></div>
+                    <!-- Ziel Selection -->
+                    <div class="control-group">
+                        <label class="control-label"><i class="fas fa-flag-checkered"></i> Dein Ziel:</label>
+                        <select id="pathZiel" class="path-select" onchange="calculatePath()" disabled>
+                            <option value="" disabled selected>Zuerst Start wählen...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Visualisierung -->
+                <div id="path-visual-container" class="path-visual-container hidden">
+                    <div class="path-timeline" id="pathTimeline">
+                        <!-- Wird dynamisch gefüllt -->
+                    </div>
+
+                    <div class="path-details-box hidden" id="pathDetails">
+                        <h4>Details zum Weg</h4>
+                        <div id="pathDetailsContent"></div>
                     </div>
                 </div>
             </div>
@@ -167,7 +189,7 @@
             </div>
 
             <div class="grid-cols-2">
-                <!-- VABO Box -->
+                <!-- VABO Box - FIXED PDF LINK -->
                 <div class="download-box">
                     <div class="box-icon vabo-icon"><i class="fas fa-globe"></i></div>
                     <div class="box-content">
