@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVdual-Anmeldung | Meldestelle BBS Stuttgart</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Crect fill='%23FFED00' width='60' height='60'/%3E%3Ctext x='30' y='35' font-family='Arial' font-size='14' font-weight='bold' text-anchor='middle' fill='%231A1A1A'%3EBBS%3C/text%3E%3C/svg%3E" alt="Logo" width="60" height="60">
+                    <span class="logo-text">Meldestelle<br><strong>Berufsbildende Schulen Stuttgart</strong></span>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html">Startseite</a>
+                    <a href="lehrkraefte.html">Für Schulen</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <main class="container">
+        <section class="intro-section">
+            <h1>AVdual-Anmeldung</h1>
+            <p class="intro-text">Ausbildungsvorbereitung dual – Für Jugendliche ohne Hauptschulabschluss</p>
+        </section>
+        <div class="alert alert-warning">
+            <p><strong>⚠️ Wichtig:</strong> Der Anmeldeschluss ist der <strong>30. April 2026</strong>!</p>
+        </div>
+        <form id="avdualForm" data-form-type="avdual">
+            <section class="form-section">
+                <h2>Persönliche Daten</h2>
+                <div class="form-group">
+                    <label for="name">Vollständiger Name <span class="required">*</span></label>
+                    <input type="text" id="name" name="Vollständiger Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="birthdate">Geburtsdatum <span class="required">*</span></label>
+                    <input type="date" id="birthdate" name="Geburtsdatum" required>
+                </div>
+                <div class="form-group">
+                    <label for="street">Straße und Hausnummer <span class="required">*</span></label>
+                    <input type="text" id="street" name="Straße" required>
+                </div>
+                <div class="form-group">
+                    <label for="city">Stadt <span class="required">*</span></label>
+                    <input type="text" id="city" name="Stadt" required value="Stuttgart">
+                </div>
+                <div class="form-group">
+                    <label for="zipcode">Postleitzahl <span class="required">*</span></label>
+                    <input type="text" id="zipcode" name="Postleitzahl" required pattern="[0-9]{5}">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Telefonnummer <span class="required">*</span></label>
+                    <input type="tel" id="phone" name="Telefon" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-Mail-Adresse</label>
+                    <input type="email" id="email" name="E-Mail">
+                </div>
+            </section>
+            <section class="form-section">
+                <h2>Zuletzt besuchte Schule</h2>
+                <div class="form-group">
+                    <label for="lastSchool">Name der Schule <span class="required">*</span></label>
+                    <input type="text" id="lastSchool" name="Letzte Schule" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastGrade">Zuletzt besuchte Klassenstufe <span class="required">*</span></label>
+                    <select id="lastGrade" name="Klassenstufe" required>
+                        <option value="">-- Bitte wählen --</option>
+                        <option value="Klasse 7">Klasse 7</option>
+                        <option value="Klasse 8">Klasse 8</option>
+                        <option value="Klasse 9">Klasse 9</option>
+                        <option value="Klasse 10">Klasse 10</option>
+                        <option value="Sonstiges">Sonstiges</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="careerGoal">Berufswunsch <span class="required">*</span></label>
+                    <textarea id="careerGoal" name="Berufswunsch" required rows="3" placeholder="Welchen Beruf möchten Sie erlernen?"></textarea>
+                </div>
+            </section>
+            <!-- HIER SCHULEN ÄNDERN -->
+            <section class="form-section">
+                <h2>Schulwahl (bis zu 3 Prioritäten)</h2>
+                <p class="help-text">Wählen Sie bis zu 3 Schulen aus und geben Sie Ihre Priorität an (1 = höchste Priorität).</p>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="Schule_Farbe_Gestaltung" value="ja">Schule für Farbe und Gestaltung<input type="number" name="Prio_Farbe_Gestaltung" min="1" max="3" style="width:60px;margin-left:10px" placeholder="Prio"></label>
+                    <label><input type="checkbox" name="Schule_Robert_Mayer" value="ja">Robert-Mayer-Schule<input type="number" name="Prio_Robert_Mayer" min="1" max="3" style="width:60px;margin-left:10px" placeholder="Prio"></label>
+                    <label><input type="checkbox" name="Schule_Hoppenlau" value="ja">Gewerbliche Schule Im Hoppenlau<input type="number" name="Prio_Hoppenlau" min="1" max="3" style="width:60px;margin-left:10px" placeholder="Prio"></label>
+                    <label><input type="checkbox" name="Schule_Cotta" value="ja">Johann-Friedrich-von-Cotta-Schule<input type="number" name="Prio_Cotta" min="1" max="3" style="width:60px;margin-left:10px" placeholder="Prio"></label>
+                    <label><input type="checkbox" name="Schule_Kerschensteiner" value="ja">Kerschensteinerschule<input type="number" name="Prio_Kerschensteiner" min="1" max="3" style="width:60px;margin-left:10px" placeholder="Prio"></label>
+                    <label><input type="checkbox" name="Schule_Maybach" value="ja">Wilhelm-Maybach-Schule<input type="number" name="Prio_Maybach" min="1" max="3" style="width:60px;margin-left:10px" placeholder="Prio"></label>
+                    <label><input type="checkbox" name="Schule_Louis_Leitz" value="ja">Louis-Leitz-Schule<input type="number" name="Prio_Louis_Leitz" min="1" max="3" style="width:60px;margin-left:10px" placeholder="Prio"></label>
+                    <label><input type="checkbox" name="Schule_Siemens" value="ja">Werner-Siemens-Schule<input type="number" name="Prio_Siemens" min="1" max="3" style="width:60px;margin-left:10px" placeholder="Prio"></label>
+                </div>
+            </section>
+            <section class="form-section">
+                <h2>Dokumente hochladen</h2>
+                <div class="form-group">
+                    <label>Letztes Zeugnis <span class="required">*</span></label>
+                    <div class="file-upload">
+                        <input type="file" id="certificateFile" name="Zeugnis" accept=".pdf,.jpg,.jpeg,.png" required data-display="certificateFileName">
+                        <label for="certificateFile">Datei auswählen</label>
+                        <div class="file-name" id="certificateFileName">Keine Datei ausgewählt</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Lebenslauf <span class="required">*</span></label>
+                    <div class="file-upload">
+                        <input type="file" id="cvFile" name="Lebenslauf" accept=".pdf,.doc,.docx" required data-display="cvFileName">
+                        <label for="cvFile">Datei auswählen</label>
+                        <div class="file-name" id="cvFileName">Keine Datei ausgewählt</div>
+                    </div>
+                </div>
+            </section>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Anmeldung absenden</button>
+            </div>
+        </form>
+    </main>
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <h2>✅ Anmeldung erstellt!</h2>
+            <p>Ihre Anmeldung wurde als Datei heruntergeladen.<br><br><strong>Nächster Schritt:</strong><br>Bitte senden Sie diese Datei zusammen mit Ihren Dokumenten per E-Mail an:</p>
+            <!-- HIER E-MAIL ÄNDERN -->
+            <p style="font-size:1.25rem;font-weight:bold"><a href="mailto:meldestelle-bs@stuttgart.de">meldestelle-bs@stuttgart.de</a></p>
+            <button onclick="closeModal()" class="btn btn-primary">Verstanden</button>
+        </div>
+    </div>
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Kontakt</h3>
+                    <!-- HIER E-MAIL ÄNDERN -->
+                    <p><strong>E-Mail:</strong> <a href="mailto:meldestelle-bs@stuttgart.de">meldestelle-bs@stuttgart.de</a></p>
+                </div>
+            </div>
+            <p class="footer-copyright">© 2026 Landeshauptstadt Stuttgart</p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
