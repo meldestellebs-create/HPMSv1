@@ -4,12 +4,10 @@
 // ==========================================
 
 function startTool(toolName) {
-    // Hide Selection
     document.getElementById('orientation-selection').classList.add('hidden');
     document.getElementById('tool-container').classList.remove('hidden');
     document.getElementById('tool-container').classList.add('animate-in');
 
-    // Show correct Content
     if (toolName === 'wizard') {
         document.getElementById('wizard-content').classList.remove('hidden');
         document.getElementById('path-content').classList.add('hidden');
@@ -24,207 +22,130 @@ function backToSelection() {
     document.getElementById('orientation-selection').classList.remove('hidden');
     document.getElementById('orientation-selection').classList.add('animate-in');
 
-    // Reset specific tool states if needed
+    // Reset states
     resetWizard(); 
+    resetPathTool();
 }
 
 // ==========================================
-// TOOL 1: BILDUNGS- UND QUALIFIZIERUNGSWEGE (FULL DATABASE)
+// TOOL 1: WIZARD (VABO/AVdual + DB)
 // ==========================================
 let selectedBildungsstand = '';
 let selectedZiel = '';
 
-// Ziel-Optionen (Expanded based on repo)
 const zielOptionen = {
     kein: [
-        { id: 'deutsch', label: 'Deutsch lernen', icon: '🗣️', desc: 'Deutsche Sprache erlernen und verbessern' },
-        { id: 'hauptschul', label: 'Hauptschulabschluss machen', icon: '📝', desc: 'Einen gleichwertigen Bildungsstand erwerben' },
-        { id: 'orientierung', label: 'Beruflich orientieren', icon: '🧭', desc: 'Mich beruflich orientieren und vorbereiten' },
-        { id: 'ausbildung', label: 'Ausbildung beginnen', icon: '🎯', desc: 'Eine Ausbildung starten' }
+        { id: 'deutsch', label: 'Deutsch lernen', icon: '🗣️', desc: 'Deutsche Sprache erlernen' },
+        { id: 'hauptschul', label: 'Hauptschulabschluss', icon: '📝', desc: 'Den Abschluss nachholen' },
+        { id: 'ausbildung', label: 'Ausbildungsvorbereitung', icon: '🛠️', desc: 'Bereit für die Ausbildung werden' }
     ],
     hauptschul: [
-        { id: 'mittlerer', label: 'Mittleren Bildungsabschluss', icon: '📚', desc: 'Die Fachschulreife erwerben' },
-        { id: 'orientierung', label: 'Beruflich orientieren', icon: '🧭', desc: 'Mich beruflich orientieren' },
-        { id: 'ausbildung', label: 'Ausbildung beginnen', icon: '🎯', desc: 'Eine Ausbildung starten' }
+        { id: 'mittlerer', label: 'Mittlere Reife', icon: '📚', desc: 'Weiter zur Fachschulreife' },
+        { id: 'ausbildung', label: 'Ausbildung', icon: '🎓', desc: 'Direkt in den Beruf starten' },
+        { id: 'verbessern', label: 'Abschluss verbessern', icon: '📈', desc: 'Noten verbessern & Praxis' }
     ],
     mittlerer: [
-        { id: 'fhr', label: 'Fachhochschulreife', icon: '🎓', desc: 'Die Fachhochschulreife erwerben' },
-        { id: 'abitur', label: 'Abitur (Allg. Hochschulreife)', icon: '🎖️', desc: 'Das Abitur machen' },
-        { id: 'orientierung', label: 'Beruflich orientieren', icon: '🧭', desc: 'Mich beruflich orientieren' },
-        { id: 'ausbildung', label: 'Ausbildung beginnen', icon: '🎯', desc: 'Eine Ausbildung starten' }
+        { id: 'bk', label: 'Berufskolleg', icon: '💼', desc: 'Fachhochschulreife & Assistent' },
+        { id: 'gymnasium', label: 'Berufliches Gymnasium', icon: '🏛️', desc: 'Abitur machen' },
+        { id: 'ausbildung', label: 'Ausbildung', icon: '🎓', desc: 'Duale Ausbildung beginnen' }
     ]
 };
 
-// FULL DATABASE (Merged from uploaded file:110 + VABO/AVdual specific links)
 const bildungswegeData = {
     kein: {
         deutsch: [
             {
-                name: "VABO - Vorqualifizierungsjahr Arbeit/Beruf",
-                description: "Für junge Menschen ohne Deutschkenntnisse, die die deutsche Sprache erlernen möchten.",
-                dauer: "Mindestens 1 Schuljahr",
-                voraussetzungen: "Berufsschulpflichtig (u18), nicht deutsche Herkunftssprache, geringe oder keine Deutschkenntnisse",
-                ergebnis: "Spracherwerb bis B1, Vorbereitung für Ausbildung oder weitere Schularten",
-                finanzierung: "Schulbesuch kostenfrei",
-                kontakt: { name: "Meldestelle der beruflichen Schulen Stuttgart", telefon: "0711 / 216-60277", email: "meldestelle-bs@stuttgart.de" },
-                besonderheiten: "Intensive Sprachförderung bis B1-Niveau",
-                // CUSTOM FIELD FOR DIRECT PDF DOWNLOAD
-                pdfLink: "Anfrage-VABO-SJ-26-27-Version-03-02-2026.pdf",
-                pdfLabel: "Vermittlungsanfrage VABO (PDF)"
-            },
-            {
-                name: "Integrationskurs",
-                description: "Bundesweites Angebot zum Erlernen der deutschen Sprache für Zugewanderte.",
-                dauer: "6-10 Monate",
-                voraussetzungen: "Migrationshintergrund, Aufenthaltstitel",
-                ergebnis: "Deutschkenntnisse bis B1, Orientierungskurs",
-                finanzierung: "Für Berechtigte kostenlos oder reduziert",
-                kontakt: { name: "Volkshochschule Stuttgart", web: "www.vhs-stuttgart.de" },
-                besonderheiten: "Abschluss mit DTZ-Prüfung"
+                title: "VABO",
+                subtitle: "Vorqualifizierungsjahr Arbeit/Beruf",
+                desc: "Intensiver Spracherwerb für Neuzugewanderte ohne Deutschkenntnisse.",
+                badges: ["Schulplatz", "Deutsch A1-B1"],
+                // FIXED PDF LINK
+                link: "Anfrage-VABO-SJ-26-27-Version-03-02-2026.pdf",
+                linkText: "Vermittlungsanfrage VABO (PDF)"
             }
         ],
         hauptschul: [
             {
-                name: "AVdual - Ausbildungsvorbereitung dual",
-                description: "Für junge Menschen ohne Schulabschluss, die berufsschulpflichtig sind.",
-                dauer: "1 Schuljahr",
-                voraussetzungen: "Berufsschulpflichtig (u18), kein Ausbildungsplatz",
-                ergebnis: "Hauptschulabschluss möglich, Übergang in Ausbildung",
-                finanzierung: "Schulbesuch kostenfrei",
-                kontakt: { name: "Meldestelle der beruflichen Schulen Stuttgart", telefon: "0711 / 216-60277", email: "meldestelle-bs@stuttgart.de" },
-                besonderheiten: "Hoher Praktikumsanteil, sozialpädagogische Begleitung",
-                pdfLink: "AVdual%202026%20-%20Vermittlungsanfrage.pdf",
-                pdfLabel: "Vermittlungsanfrage AVdual (PDF)"
-            },
-            {
-                name: "Schulfremdenprüfung Hauptschulabschluss",
-                description: "Erwerb eines Schulabschlusses außerhalb eines schulischen Bildungsgangs.",
-                dauer: "Individuell",
-                voraussetzungen: "Wohnort BW, Schulbesuch führt nicht zum Abschluss",
-                ergebnis: "Hauptschulabschluss",
-                finanzierung: "Vorbereitungskurse kostenpflichtig",
-                kontakt: { name: "Staatliches Schulamt Stuttgart" },
-                besonderheiten: "Vorbereitung über VHS möglich"
-            }
-        ],
-        orientierung: [
-             {
-                name: "Freiwilligendienste (FSJ/FÖJ/BFD)",
-                description: "Soziales oder ökologisches Jahr zur Orientierung.",
-                dauer: "6-18 Monate",
-                voraussetzungen: "Vollzeitschulpflicht erfüllt",
-                ergebnis: "Zertifikat, praktische Erfahrung",
-                finanzierung: "Taschengeld, Sozialversicherung",
-                kontakt: { name: "Jugendagentur Stuttgart", web: "www.jugendagentur.net" },
-                besonderheiten: "Start oft im September"
+                title: "AVdual",
+                subtitle: "Ausbildungsvorbereitung dual",
+                desc: "Hole deinen Hauptschulabschluss nach und sammle praktische Erfahrung im Betrieb.",
+                badges: ["Hauptschulabschluss", "Praktikum"],
+                link: "AVdual%202026%20-%20Vermittlungsanfrage.pdf",
+                linkText: "Vermittlungsanfrage AVdual (PDF)"
             }
         ],
         ausbildung: [
             {
-                name: "AVdual (Ausbildungsvorbereitung)",
-                description: "Vorbereitung auf eine Ausbildung durch Praktika und Schule.",
-                dauer: "1 Schuljahr",
-                voraussetzungen: "Berufsschulpflichtig (u18)",
-                ergebnis: "Ausbildungsreife, Hauptschulabschluss",
-                kontakt: { name: "Meldestelle Stuttgart", email: "meldestelle-bs@stuttgart.de" },
-                pdfLink: "AVdual%202026%20-%20Vermittlungsanfrage.pdf",
-                pdfLabel: "Vermittlungsanfrage AVdual (PDF)"
+                title: "AVdual",
+                subtitle: "Ausbildungsvorbereitung",
+                desc: "Perfekt zur Vorbereitung auf eine Ausbildung. Du bist im Betrieb und in der Schule.",
+                badges: ["Praxis", "Orientierung"],
+                link: "AVdual%202026%20-%20Vermittlungsanfrage.pdf",
+                linkText: "Vermittlungsanfrage AVdual (PDF)"
             }
         ]
     },
     hauptschul: {
         mittlerer: [
             {
-                name: "2-jährige Berufsfachschule (2BFS)",
-                description: "Schulischer Weg zum mittleren Bildungsabschluss mit beruflicher Grundbildung.",
-                dauer: "2 Schuljahre",
-                voraussetzungen: "Hauptschulabschluss",
-                ergebnis: "Fachschulreife (Mittlere Reife)",
-                kontakt: { name: "Berufliche Schulen Stuttgart", web: "www.bewo.kultus-bw.de" },
-                besonderheiten: "Anmeldung über BewO bis 1. März"
-            },
-            {
-                name: "Berufsaufbauschule (BAS)",
-                description: "Für Personen mit Hauptschulabschluss UND Berufsausbildung.",
-                dauer: "1 Schuljahr",
-                voraussetzungen: "HSA + Ausbildung",
-                ergebnis: "Mittlere Reife",
-                kontakt: { name: "Technische Oberschule Stuttgart" }
-            }
-        ],
-        orientierung: [
-            {
-                name: "AVdual",
-                description: "Auch mit Hauptschulabschluss möglich zur Orientierung und Notenverbesserung.",
-                dauer: "1 Schuljahr",
-                kontakt: { name: "Meldestelle Stuttgart" },
-                pdfLink: "AVdual%202026%20-%20Vermittlungsanfrage.pdf",
-                pdfLabel: "Vermittlungsanfrage AVdual (PDF)"
-            },
-            {
-                name: "Freiwilligendienste (FSJ/FÖJ)",
-                description: "Praktisches Jahr zur Orientierung.",
-                dauer: "12 Monate",
-                kontakt: { name: "Jugendagentur Stuttgart", web: "www.jugendagentur.net" }
+                title: "2-jährige Berufsfachschule",
+                subtitle: "Fachschulreife",
+                desc: "Führt in zwei Jahren zur Mittleren Reife. Verschiedene Profile.",
+                badges: ["Mittlere Reife", "Vollzeit"],
+                link: "https://www.farbegestaltung.de/wp-content/uploads/Einjaehrige-Berufsfachschule-Angebote-Stuttgart-02_2025.pdf",
+                linkText: "Infoblatt (PDF)"
             }
         ],
         ausbildung: [
             {
-                name: "Duale Ausbildung",
-                description: "Betriebliche Ausbildung im Unternehmen und Berufsschule.",
-                dauer: "2-3.5 Jahre",
-                voraussetzungen: "Je nach Betrieb",
-                ergebnis: "Berufsabschluss",
-                kontakt: { name: "IHK / Handwerkskammer", web: "www.ihk.de" },
-                besonderheiten: "Vergütung während der Ausbildung"
-            },
+                title: "Duale Ausbildung",
+                subtitle: "Betrieb & Schule",
+                desc: "Der Klassiker: Du lernst im Betrieb und gehst in die Berufsschule.",
+                badges: ["Gehalt", "Berufsabschluss"],
+                link: "https://www.hwk-stuttgart.de/lehrstellenboerse",
+                linkText: "Lehrstellenbörse HWK"
+            }
+        ],
+        verbessern: [
             {
-                name: "1-jährige Berufsfachschule (1BFS)",
-                description: "Das erste Ausbildungsjahr findet vollzeitschulisch statt.",
-                dauer: "1 Jahr",
-                voraussetzungen: "Vorvertrag meist nötig",
-                ergebnis: "Anrechnung auf Ausbildung",
-                kontakt: { name: "Berufliche Schulen Stuttgart" }
+                title: "AVdual",
+                subtitle: "Abschluss verbessern",
+                desc: "Du hast schon einen Abschluss, willst aber bessere Noten für die Ausbildungssuche?",
+                badges: ["Verbesserung", "Praxis"],
+                link: "AVdual%202026%20-%20Vermittlungsanfrage.pdf",
+                linkText: "Vermittlungsanfrage AVdual (PDF)"
             }
         ]
     },
     mittlerer: {
-        fhr: [
+        bk: [
             {
-                name: "Berufskolleg (BK)",
-                description: "Führt zur Fachhochschulreife und ggf. Berufsabschluss (Assistent).",
-                dauer: "1-3 Jahre",
-                voraussetzungen: "Mittlere Reife",
-                ergebnis: "Fachhochschulreife",
-                kontakt: { name: "BewO Online", web: "www.bewo.kultus-bw.de" },
-                besonderheiten: "Anmeldung bis 1. März"
+                title: "Berufskolleg",
+                subtitle: "Fachhochschulreife",
+                desc: "Kombiniere berufliche Bildung mit der Fachhochschulreife.",
+                badges: ["FHR", "Berufsausbildung"],
+                link: "https://bewo.kultus-bw.de/",
+                linkText: "Bewerbung (BewO)"
             }
         ],
-        abitur: [
+        gymnasium: [
             {
-                name: "Berufliches Gymnasium (BG)",
-                description: "Der Weg zum Abitur mit beruflichem Profil (Technik, Wirtschaft, Soziales, etc.).",
-                dauer: "3 Jahre",
-                voraussetzungen: "Mittlere Reife mit Schnitt mind. 3,0 (D, M, E)",
-                ergebnis: "Allgemeine Hochschulreife",
-                kontakt: { name: "BewO Online", web: "www.bewo.kultus-bw.de" },
-                besonderheiten: "Anmeldung bis 1. März"
+                title: "Berufliches Gymnasium",
+                subtitle: "Allgemeine Hochschulreife",
+                desc: "Der Weg zum Abitur mit beruflichem Schwerpunkt.",
+                badges: ["Abitur", "3 Jahre"],
+                link: "https://bewo.kultus-bw.de/",
+                linkText: "Bewerbung (BewO)"
             }
         ],
         ausbildung: [
             {
-                name: "Duale Ausbildung",
-                description: "Anspruchsvolle Ausbildungsberufe stehen offen.",
-                dauer: "2-3 Jahre",
-                kontakt: { name: "IHK / HWK" }
-            }
-        ],
-        orientierung: [
-            {
-                name: "Freiwilligendienste",
-                description: "FSJ / FÖJ / BFD",
-                dauer: "6-18 Monate",
-                kontakt: { name: "Jugendagentur Stuttgart" }
+                title: "Duale Ausbildung",
+                subtitle: "Karriere im Beruf",
+                desc: "Mit mittlerer Reife stehen dir viele anspruchsvolle Ausbildungsberufe offen.",
+                badges: ["Karriere", "Vergütung"],
+                link: "https://www.arbeitsagentur.de/bildung/ausbildung",
+                linkText: "Berufsberatung"
             }
         ]
     }
@@ -245,12 +166,6 @@ function renderZielOptions(stand) {
     const container = document.getElementById('zielOptionsGrid');
     container.innerHTML = '';
     const options = zielOptionen[stand] || [];
-
-    if(options.length === 0) {
-        container.innerHTML = '<p>Keine Optionen verfügbar.</p>';
-        return;
-    }
-
     options.forEach(opt => {
         const card = document.createElement('div');
         card.className = 'option-card animate-in';
@@ -274,28 +189,14 @@ function showResults(zielId) {
     }
 
     data.forEach(item => {
-        // Create Details List
-        let detailsHtml = '';
-        if(item.dauer) detailsHtml += `<li><strong>Dauer:</strong> ${item.dauer}</li>`;
-        if(item.voraussetzungen) detailsHtml += `<li><strong>Voraussetzung:</strong> ${item.voraussetzungen}</li>`;
-
-        // Buttons: External Link vs PDF Download
-        let buttonHtml = '';
-        if (item.pdfLink) {
-            buttonHtml = `<a href="${item.pdfLink}" target="_blank" class="btn btn-primary btn-full"><i class="fas fa-download"></i> ${item.pdfLabel}</a>`;
-        } else if (item.kontakt && item.web) {
-            buttonHtml = `<a href="https://${item.web.replace('https://','')}" target="_blank" class="btn btn-glass btn-full"><i class="fas fa-external-link-alt"></i> Website öffnen</a>`;
-        }
-
+        const badges = item.badges.map(b => `<span class="badge">${b}</span>`).join('');
         const card = document.createElement('div');
         card.className = 'result-card animate-in';
         card.innerHTML = `
-            <div class="result-header"><h3>${item.name}</h3></div>
-            <p class="result-desc">${item.description}</p>
-            <ul class="result-details">${detailsHtml}</ul>
-            <div class="result-footer">
-                ${buttonHtml}
-            </div>
+            <div class="result-header"><h3>${item.title}</h3><span class="result-sub">${item.subtitle}</span></div>
+            <div class="result-badges">${badges}</div>
+            <p class="result-desc">${item.desc}</p>
+            <a href="${item.link}" target="_blank" class="btn btn-primary btn-full">${item.linkText}</a>
         `;
         container.appendChild(card);
     });
@@ -314,52 +215,126 @@ function stepBack() {
     document.getElementById('step1').style.display = 'block';
 }
 
+
 // ==========================================
-// TOOL 2: BILDUNGSWEGETOOL (Visual Path Explorer)
+// TOOL 2: BILDUNGSWEGETOOL (DROPDOWN LOGIC)
 // ==========================================
-// Simple visualizer logic
-const pathData = {
+
+const pathMap = {
+    kein: [
+        { value: 'hsa', label: 'Hauptschulabschluss' },
+        { value: 'ausbildung', label: 'Ausbildung (AVdual)' }
+    ],
     hsa: [
-        { title: "2-jährige Berufsfachschule (2BFS)", desc: "Führt zur Mittleren Reife", icon: "📚" },
-        { title: "Berufsausbildung (Dual)", desc: "Lehre im Betrieb + Berufsschule", icon: "🛠️" },
-        { title: "AVdual", desc: "Berufsvorbereitung & Abschlussverbesserung", icon: "🧭" }
+        { value: 'mr', label: 'Mittlere Reife' },
+        { value: 'ausbildung', label: 'Berufsausbildung' }
     ],
     mr: [
-        { title: "Berufliches Gymnasium", desc: "Weg zum Abitur (3 Jahre)", icon: "🏛️" },
-        { title: "Berufskolleg (BK)", desc: "Fachhochschulreife + Beruf", icon: "💼" },
-        { title: "Duale Ausbildung", desc: "Anspruchsvolle Berufe", icon: "🎓" }
+        { value: 'fhr', label: 'Fachhochschulreife' },
+        { value: 'abi', label: 'Abitur' },
+        { value: 'ausbildung', label: 'Berufsausbildung' }
     ],
-    avdual: [
-        { title: "Ausbildung", desc: "Start in den Beruf", icon: "🚀" },
-        { title: "2-jährige Berufsfachschule", desc: "Bei gutem Hauptschulabschluss", icon: "📚" }
+    fhr: [
+        { value: 'studium_fh', label: 'Studium (FH)' },
+        { value: 'ausbildung', label: 'Berufsausbildung' }
+    ],
+    abi: [
+        { value: 'studium', label: 'Studium (Uni/FH)' },
+        { value: 'ausbildung', label: 'Berufsausbildung' }
     ]
 };
 
-function showPath(start) {
-    const container = document.getElementById('path-visual');
-    const stepsContainer = container.querySelector('.path-steps');
+const pathDetails = {
+    'kein-hsa': { steps: ['VABO (bei Sprachbedarf)', 'AVdual'], desc: 'Der Weg führt über das AVdual oder VABO, um den Hauptschulabschluss nachzuholen.' },
+    'kein-ausbildung': { steps: ['AVdual'], desc: 'Über das AVdual in die Ausbildungsvorbereitung.' },
+    'hsa-mr': { steps: ['2-jährige Berufsfachschule (2BFS)', 'Berufsaufbauschule (nach Ausbildung)'], desc: 'Der klassische Weg zur Mittleren Reife führt über die zweijährige Berufsfachschule.' },
+    'hsa-ausbildung': { steps: ['Duale Ausbildung', '1-jährige Berufsfachschule'], desc: 'Direkter Einstieg in eine duale Ausbildung oder über die 1BFS.' },
+    'mr-abi': { steps: ['Berufliches Gymnasium (3 Jahre)'], desc: 'Mit einem Schnitt von 3,0 (D,M,E) kannst du auf das Berufliche Gymnasium.' },
+    'mr-fhr': { steps: ['Berufskolleg (BK)'], desc: 'Das Berufskolleg führt zur Fachhochschulreife.' },
+    'mr-ausbildung': { steps: ['Duale Ausbildung'], desc: 'Mit der Mittleren Reife stehen dir viele anspruchsvolle Berufe offen.' }
+};
 
-    document.querySelectorAll('.path-btn').forEach(b => b.classList.remove('active'));
-    event.currentTarget.classList.add('active');
+function updatePathOptions() {
+    const startVal = document.getElementById('pathStart').value;
+    const zielSelect = document.getElementById('pathZiel');
 
-    stepsContainer.innerHTML = '';
-    const paths = pathData[start];
+    zielSelect.innerHTML = '<option value="" disabled selected>Ziel wählen...</option>';
+    zielSelect.disabled = true;
 
-    paths.forEach(step => {
-        const node = document.createElement('div');
-        node.className = 'path-node animate-in';
-        node.innerHTML = `
-            <div class="node-icon">${step.icon}</div>
-            <strong>${step.title}</strong>
-            <small style="display:block; color:var(--text-muted); margin-top:5px;">${step.desc}</small>
-        `;
-        stepsContainer.appendChild(node);
-    });
-
-    container.classList.remove('hidden');
+    if (startVal && pathMap[startVal]) {
+        pathMap[startVal].forEach(opt => {
+            const option = document.createElement('option');
+            option.value = opt.value;
+            option.text = opt.label;
+            zielSelect.appendChild(option);
+        });
+        zielSelect.disabled = false;
+    }
+    document.getElementById('path-visual-container').classList.add('hidden');
 }
 
-// Scroll Helper
+function calculatePath() {
+    const start = document.getElementById('pathStart').value;
+    const ziel = document.getElementById('pathZiel').value;
+    const key = `${start}-${ziel}`;
+    const container = document.getElementById('path-visual-container');
+    const timeline = document.getElementById('pathTimeline');
+    const details = document.getElementById('pathDetailsContent');
+    const detailsBox = document.getElementById('pathDetails');
+
+    if (pathDetails[key]) {
+        const info = pathDetails[key];
+
+        // Render Timeline
+        timeline.innerHTML = '';
+
+        // Start Node
+        timeline.innerHTML += `
+            <div class="timeline-node start">
+                <div class="t-icon">🏁</div>
+                <span>Start</span>
+            </div>
+        `;
+
+        // Steps
+        info.steps.forEach(step => {
+            timeline.innerHTML += `
+                <div class="timeline-connector"></div>
+                <div class="timeline-node step">
+                    <div class="t-icon">⚡</div>
+                    <span>${step}</span>
+                </div>
+            `;
+        });
+
+        // Ziel Node
+        timeline.innerHTML += `
+            <div class="timeline-connector"></div>
+            <div class="timeline-node end">
+                <div class="t-icon">🏆</div>
+                <span>Ziel</span>
+            </div>
+        `;
+
+        // Details
+        details.innerHTML = `<p>${info.desc}</p>`;
+        detailsBox.classList.remove('hidden');
+        container.classList.remove('hidden');
+        container.classList.add('animate-in');
+    } else {
+        // Fallback for generic paths
+        timeline.innerHTML = '<p class="text-center">Weg wird berechnet...</p>';
+        container.classList.remove('hidden');
+    }
+}
+
+function resetPathTool() {
+    document.getElementById('pathStart').value = "";
+    document.getElementById('pathZiel').innerHTML = '<option value="" disabled selected>Zuerst Start wählen...</option>';
+    document.getElementById('pathZiel').disabled = true;
+    document.getElementById('path-visual-container').classList.add('hidden');
+}
+
 function scrollToElement(id) {
     document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
 }
