@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -9,7 +10,7 @@
 </head>
 <body>
 
-    <!-- Background Animation (wie im BQW-2 Repo) -->
+    <!-- Background Animation -->
     <div class="bg-animation">
         <div class="gradient-blob blob-1"></div>
         <div class="gradient-blob blob-2"></div>
@@ -38,14 +39,12 @@
                 <span class="text-gradient">Stuttgart</span>
             </h1>
 
-            <!-- Neuer Text (Anforderung 1) -->
             <p class="hero-subtitle animate-in delay-2">
                 Wir sind zuständig für Jugendliche mit Wohnort Stuttgart ab 15 Jahren bis Volljährigkeit. 
                 Wir nehmen Vermittlungsanfragen für die beiden Schularten <strong>VABO</strong> und <strong>AVdual</strong> entgegen. 
                 Im VABO lernt man Deutsch und im AVdual macht oder verbessert man seinen Hauptschulabschluss.
             </p>
 
-            <!-- Buttons -->
             <div class="hero-actions animate-in delay-3">
                 <button onclick="scrollToElement('wizard')" class="btn btn-primary btn-glow">
                     <i class="fas fa-compass"></i> Zum Schul-Wegweiser
@@ -54,12 +53,10 @@
                     <i class="fas fa-download"></i> Direkt zu den Formularen
                 </button>
             </div>
-
-            <!-- "Kostenfreie Vermittlung..." wurde entfernt (Anforderung 2) -->
         </div>
     </section>
 
-    <!-- Wizard Section (Wegweiser) -->
+    <!-- Wizard Section -->
     <section id="wizard" class="container section-spacing">
         <div class="glass-card wizard-container animate-in">
             <div class="section-header text-center">
@@ -92,9 +89,7 @@
             <!-- Step 2 -->
             <div id="step2" class="hidden">
                 <button onclick="stepBack()" class="btn-text mb-4"><i class="fas fa-arrow-left"></i> Zurück</button>
-                <div id="zielOptionsGrid" class="grid-cols-3">
-                    <!-- JS füllt das -->
-                </div>
+                <div id="zielOptionsGrid" class="grid-cols-3"></div>
             </div>
 
             <!-- Results -->
@@ -102,14 +97,12 @@
                 <div class="results-top-bar">
                     <button onclick="resetWizard()" class="btn-text"><i class="fas fa-redo"></i> Neu starten</button>
                 </div>
-                <div id="resultsGrid" class="results-list">
-                    <!-- JS füllt das -->
-                </div>
+                <div id="resultsGrid" class="results-list"></div>
             </div>
         </div>
     </section>
 
-    <!-- Downloads Section (Ordnung geschaffen!) -->
+    <!-- Downloads Section -->
     <section id="downloads" class="container section-spacing">
         <div class="glass-card p-5">
             <div class="section-header text-center mb-5">
@@ -125,8 +118,9 @@
                         <h3>VABO</h3>
                         <p>Für Jugendliche ohne Deutschkenntnisse.</p>
                         <div class="btn-group">
-                            <a href="VABO%20Vermittlungsanfrage%20SJ%2026-27.pdf" target="_blank" class="btn btn-sm btn-primary">
-                                <i class="fas fa-download"></i> Vermittlungsanfrage
+                            <!-- KORRIGIERT: Neuer Dateiname auf GitHub, aber Text bleibt "Vermittlungsanfrage VABO" -->
+                            <a href="Anfrage-VABO-SJ-26-27-Version-03-02-2026.pdf" target="_blank" class="btn btn-sm btn-primary">
+                                <i class="fas fa-download"></i> Vermittlungsanfrage VABO
                             </a>
                             <a href="https://www.farbegestaltung.de/wp-content/uploads/VABO_Hinweisblatt_Maerz_2025.pdf" target="_blank" class="btn btn-sm btn-glass">
                                 <i class="fas fa-info"></i> Merkblatt
@@ -142,8 +136,9 @@
                         <h3>AVdual</h3>
                         <p>Ausbildungsvorbereitung & Hauptschulabschluss.</p>
                         <div class="btn-group">
+                            <!-- KORRIGIERT: "Vermittlungsanfrage" statt "Anmeldung" -->
                             <a href="AVdual%202026%20-%20Vermittlungsanfrage.pdf" target="_blank" class="btn btn-sm btn-primary">
-                                <i class="fas fa-download"></i> Vermittlungsanfrage
+                                <i class="fas fa-download"></i> Vermittlungsanfrage AVdual
                             </a>
                             <a href="https://www.farbegestaltung.de/wp-content/uploads/Hinweisblatt-Schueler-AVdual.pdf" target="_blank" class="btn btn-sm btn-glass">
                                 <i class="fas fa-info"></i> Merkblatt
@@ -153,7 +148,7 @@
                 </div>
             </div>
 
-            <!-- Weitere Links (Kompakt) -->
+            <!-- Weitere Links -->
             <div class="more-links mt-5">
                 <h4>Weitere Informationen</h4>
                 <div class="link-tags">
